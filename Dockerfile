@@ -1,0 +1,36 @@
+FROM docker-registry.beta.browxy.com/browxy_compiler_base:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y tar gzip xz-utils openjdk-8-jdk maven locales cron git unzip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# grant sudoers privileges
+RUN adduser --system --ingroup users --shell /bin/bash --home /home/balloon compiler
+RUN echo "compiler ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "Defaults env_keep+=DOCKER_DAEMON_ARGS" >> /etc/sudoers
+
+# create hosts file and backup
+RUN cp /etc/hosts /etc/hosts.default
+RUN chmod ugo+rw /etc/hosts.default
+#RUN chmod ugo+rw /etc/hosts
+
+RUN mkdir -p /home/balloon/application
+RUN mkdir -p /home/balloon/.m2
+RUN mkdir -p /home/balloon/.m2/com/browxy
+COPY ./target/runnable /home/balloon/application
+RUN chown -R compiler:users /home/balloon/application
+RUN chown -R compiler:users /home/balloon/.m2
+RUN chmod ugo+x /home/balloon/application/*.sh
+
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Set the default command
+CMD ["bash", "-c", "/home/balloon/application/dockerStart.sh"]
+

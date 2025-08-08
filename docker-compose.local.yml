@@ -1,0 +1,15 @@
+services:
+  balloon:
+    image: docker-registry.local/browxy_balloon:latest
+    env_file:
+      - env.local
+    container_name: balloon
+    hostname: balloon
+    restart: unless-stopped
+    ports:
+      - "8095:8095"
+    volumes:
+      - /var/compiler/balloon:/var/balloon
+    ulimits:
+      nproc: 524288
+      nofile: 524288

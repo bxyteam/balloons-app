@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  balloon:
+    image: docker-registry.teleserver.com.ar/browxy_balloon:latest
+    env_file:
+      - env.dev
+    container_name: balloon
+    hostname: balloon
+    networks:
+      - install_browxy
+    restart: unless-stopped
+    ports:
+      - "8095:8095"
+    volumes:
+      - /var/compiler/balloon:/var/balloon
+    ulimits:
+      nproc: 524288
+      nofile: 524288
+
+networks:
+  install_browxy:
+    external: true
+
+

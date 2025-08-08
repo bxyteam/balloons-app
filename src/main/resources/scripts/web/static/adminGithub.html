@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Repo Setup Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+/*
+    .directory-list {
+      margin-top: 10px;
+    }
+
+    .directory-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: #eef1f5;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .directory-item button {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .directory-item button:hover {
+      background: #c0392b;
+    }
+*/
+    .btn {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-submit {
+       background-color: #27ae60;
+       margin-left: auto;
+       display: block;
+    }
+    .btn-submit:hover {
+         background-color: #219150; 
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background: #fff;
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .close-btn {
+      margin-top: 15px;
+      background-color: #27ae60;
+      color: #fff;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background-color: #219150;
+    }
+  </style>
+  <script>
+    window.__githubData = %%GITHUB_DATA%%;
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <h2>GitHub Repo Setup</h2>
+
+    <div class="form-group">
+      <label for="githubRepo">GitHub Repository</label>
+      <input type="text" id="githubRepo">
+      <div class="error" id="error-githubRepo"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="githubToken">GitHub Token</label>
+      <input type="text" id="githubToken">
+      <div class="error" id="error-githubToken"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="githubOwner">GitHub Owner</label>
+      <input type="text" id="githubOwner">
+      <div class="error" id="error-githubOwner"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="localRepoPath">Local Repo Path</label>
+      <input type="text" id="localRepoPath">
+      <div class="error" id="error-localRepoPath"></div>
+    </div>
+
+   <!--
+    <div class="form-group">
+      <label for="directoryInput">Directory to Copy</label>
+      <input type="text" id="directoryInput" placeholder="Enter directory path">
+      <button class="btn" onclick="addDirectory()">Add Directory</button>
+    </div>
+
+    <div class="directory-list" id="directoryList"></div>
+   -->
+    
+    <button class="btn btn-submit" onclick="submitForm()">Submit</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <h3>Submission Successful!</h3>
+      <p>Your data was sent successfully.</p>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const directoriesToCopy = [];
+    
+    function fillForm() {
+        document.querySelector("#githubRepo").value = window.__githubData.githubRepo;
+        document.querySelector("#githubToken").value = window.__githubData.githubToken;
+        document.querySelector("#githubOwner").value = window.__githubData.githubOwner;
+        document.querySelector("#localRepoPath").value = window.__githubData.localRepoPath; 
+        /*
+        window.__githubData.directoriesToCopy.forEach(dir => {
+          directoriesToCopy.push(dir);
+          renderDirectories();
+        });
+       */
+    }
+
+    /*
+    function addDirectory() {
+      const input = document.getElementById("directoryInput");
+      const dir = input.value.trim();
+
+      if (dir && !directoriesToCopy.includes(dir)) {
+        directoriesToCopy.push(dir);
+        input.value = '';
+        renderDirectories();
+      }
+    }
+
+    function removeDirectory(index) {
+      directoriesToCopy.splice(index, 1);
+      renderDirectories();
+    }
+
+    function renderDirectories() {
+      const list = document.getElementById("directoryList");
+      list.innerHTML = '';
+
+      directoriesToCopy.forEach((dir, index) => {
+        const item = document.createElement("div");
+        item.className = "directory-item";
+        item.innerHTML = `
+          <span>${dir}</span>
+          <button onclick="removeDirectory(${index})">Remove</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+     */
+   
+    function submitForm() {
+      const fields = ["githubRepo", "githubToken", "githubOwner", "localRepoPath"];
+      let hasError = false;
+
+      // Clear previous errors
+      fields.forEach(field => {
+        document.getElementById(`error-${field}`).innerText = "";
+      });
+
+      // Validate required fields
+      fields.forEach(field => {
+        const value = document.getElementById(field).value.trim();
+        if (!value) {
+          document.getElementById(`error-${field}`).innerText = "This field is required.";
+          hasError = true;
+        }
+      });
+
+      if (hasError) return;
+
+      const data = {
+        githubRepo: document.getElementById("githubRepo").value.trim(),
+        githubToken: document.getElementById("githubToken").value.trim(),
+        githubOwner: document.getElementById("githubOwner").value.trim(),
+        localRepoPath: document.getElementById("localRepoPath").value.trim()
+      };
+
+      fetch("/api/admin/v1/saveGithubConf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          showModal();
+        } else {
+          alert("Submission failed. Please try again.");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Network error. Please try again.");
+      });
+    }
+
+    function showModal() {
+      document.getElementById("successModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("successModal").style.display = "none";
+    }
+
+    window.addEventListener("load", fillForm);
+  </script>
+
+</body>
+</html>

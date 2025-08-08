@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  balloon:
+    image: docker-registry.beta.browxy.com/browxy_balloon:1.0
+    env_file:
+      - env.prod
+    container_name: balloon
+    hostname: balloon
+    networks:
+      - browxy
+    restart: unless-stopped
+    ports:
+      - "8095:8095"
+    volumes:
+      - /srv/balloon_data:/var/balloon
+    ulimits:
+      nproc: 524288
+      nofile: 524288
+
+networks:
+  browxy:
+    external: true
+
+

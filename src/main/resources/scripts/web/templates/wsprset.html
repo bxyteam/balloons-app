@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="none">
+<meta http-equiv="refresh" content="600">
+<link rel="SHORTCUT ICON"
+	href="https://i.postimg.cc/MGTVxcbP/amsatlogo.gif">
+<title>Balloons Presets</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/css/styleWsprset.min.css">
+
+<style>
+.spinner-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgb(0, 0, 0, .75);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+}
+
+.spinner {
+	width: 100px;
+	height: 100px;
+	border: 8px solid #ccc;
+	border-top-color: #0ac587;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@
+keyframes spin {to { transform:rotate(360deg);
+	
+}
+}
+</style>
+
+<script>
+const readAsset = async ({ assetOutputType, assetUrl }) => {
+  	try {
+      	return await window.parent.window.readAssetFile({ assetOutputType, assetUrl });
+     	} catch(error) {
+        	return { statusCode: 400, data: [[]], error: "Something went wrong." };
+      }
+  };
+
+	const loadDataTrackerjson = async () => {
+  	try {
+    		window.HOST_URL = `${new URL(window.parent.window.location.href).origin}`; 
+    		const browxySite =
+      		HOST_URL === "https://www.dev.browxy.com" ||
+      		HOST_URL === "https://www.browxy.com";
+
+    		const assetUrl = browxySite
+      		? `/customHtmlUrl?projectCompositeId=${window.parent.window.projectId}&hash=123&dwrSessionId=null&customFile=assets/datatracker.json&isSharedCustomPage=true`
+      		: `/api/v1/getAsset?file=${encodeURIComponent("share/assets/datatracker.json")}`;
+
+   		let serverResponse;
+
+    		if (browxySite) {
+      		const assetUrlResp = await readAsset({
+        			assetOutputType: "txt",
+        			assetUrl: assetUrl,
+      		});
+  
+      		if (assetUrlResp.statusCode !== 200) {
+        			console.error(assetUrlResp.error);
+        			return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };
+      		}
+
+      		const response = await readAsset({
+        			assetOutputType: "json",
+        			assetUrl: assetUrlResp.data,
+      		});
+     
+      		if (response.statusCode !== 200) {
+        			console.error(response.error);
+        			return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };
+     			}
+      		serverResponse = response.data;
+    		} else {
+      		const response = await readAsset({
+        			assetOutputType: "json",
+        			assetUrl,
+      		});
+      		serverResponse = response.data;
+    		}
+    		return serverResponse;
+    	} catch (error) {
+    		console.error(error);
+    		return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };   
+  	 } 
+  };
+</script>  
+
+<script
+	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/assetsSrc.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/indexWsprset.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/ballonTracker.min.js"></script>
+
+</head>
+
+<body>
+	<div id="spinner-overlay" class="spinner-overlay">
+		<div class="spinner"></div>
+	</div>
+	<form name="f" id="f" style="margin-bottom: 5px;">
+		<!--
+    if more then
+    <center>
+        <span style='font-size:12px;font-family:Tahoma;font-weight:bold;line-height:12px;white-space:nowrap;'>
+         <a href=# onclick="alert('This site allows settings & recording of\npicoBalloons configuration parameters\nfurther providing flight path and charts\n------------------------------------------\n Free facility available to the community\ndeveloped & online by AMSAT Argentina')" title='What is this site?' style='text-decoration:none;'><span style='font-size:11px;line-height:10px;font-family:Arial;font-weight:bold;background-color:#5a8742;color:white;border-color:green;border-style:outset;border-radius: 10px;cursor:pointer;text-shadow: 2px 2px 0 black, 4px 3px 0 gray;'>&nbsp;?&nbsp;</a>
+        </span>&nbsp;
+        <a href='wspruser.asp' style='font-size:13px;font-weight:normal;line-height:14px;'>
+            <span name=actual1 id=actual1 onmouseover="this.style.color='red'" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">Tracking Now</span>
+        </a>&nbsp;~ PICO BALLOONs DATA PRESETs ENTRIES ~&nbsp;<span style='font-weight:normal;'>
+            <i>(used on <a href='http://lu7aa.org/wspr.asp' target='_blank'>wspr.asp</a>)</i>
+        </span>
+        <a title=' Go see and track&#13;amateur satellites' href=http://amsat.org.ar/pass target=_blank style='font-weight:normal;'>
+            <i>Sats</i></a>&nbsp;&nbsp;
+            <a href=# onclick="mas()" style='font-size:13px;font-weight:normal;line-height:14px;'>
+                <span name=show id=show onmouseover="this.style.color='red'" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'">Show old entries</span>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id=clasi name=clasi>
+                <a id=clasifi name=clasifi href=# onclick="clasif()" onmouseover="this.style.color='red'" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" style='font-weight:normal;font-size:13px;'>Sort by CALL</a>
+            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type='hidden' id='who' name='who'>
+            <input id=buscar name=buscar type=text size=5 style='height:17px;'>&nbsp;
+            <input title='Highlight entries with...' type=button onclick="document.location.href='wsprset.asp?more=1&call='+document.getElementById('buscar').value.toLowerCase();" style='height:18px;line-height:12px;cursor:pointer;' value='Search'>
+            <table border=1 width=950px; cellpadding=1 cellspacing=0 style='border-right-width:0px;font-family:Tahoma;font-size:11px;line-height:8px;background-color:#ffffff;border-radius: 7px;width:950px;border-left-width:0px;border-bottom-width:0px;border-top-width:0px;'>
+                else
+               </center>
+                -->
+
+
+		<div
+			style="display: grid; grid-template-columns: 200px 1fr; gap: 2px; margin: 0 auto; width: fit-content; justify-items: center;">
+			<div style="grid-column: 2/-1; margin: 5px 0;">
+				<span
+					style='font-size: 12px; font-family: Tahoma; font-weight: bold; line-height: 12px; white-space: nowrap;'>
+					<a href=#
+					onclick="alert('This site allows settings & recording of\npicoBalloons configuration parameters\nfurther providing flight path and charts\n------------------------------------------\n Free facility available to the community\ndeveloped & online by AMSAT Argentina')"
+					title='What is this site?' style='text-decoration: none;'> <span
+						style='font-size: 11px; line-height: 10px; font-family: Arial; font-weight: bold; background-color: #5a8742; color: white; border-color: green; border-style: outset; border-radius: 10px; cursor: pointer; text-shadow: 2px 2px 0 black, 4px 3px 0 gray;'>
+							&nbsp;?&nbsp;</span>
+				</a>
+				</span>&nbsp; <a href='wspruser.asp'
+					style='font-size: 13px; font-weight: normal; line-height: 14px;'>
+					<span name="actual1" id="actual1"
+					onmouseover="this.style.color='red'"
+					onmouseover="this.style.color='red'"
+					onmouseout="this.style.color='black'">Tracking Now</span>
+				</a>&nbsp;~ PICO BALLOONs DATA PRESETs ENTRIES ~&nbsp; <span
+					style='font-weight: normal;'> <i>(used on <a
+						href='http://lu7aa.org/wspr.asp' target='_blank'>wspr.asp</a>)
+				</i>
+				</span> <a title=' Go see and track&#13;amateur satellites'
+					href="http://amsat.org.ar/pass" target=_blank
+					style='font-weight: normal;'> <i>Sats</i>
+				</a>&nbsp;&nbsp; <a href=# onclick="mas()"
+					style='font-size: 13px; font-weight: normal; line-height: 14px;'>
+					<span name="show" id="show" onmouseover="this.style.color='red'"
+					onmouseover="this.style.color='red'"
+					onmouseout="this.style.color='black'">Show old entries</span>
+				</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="clasi" name="clasi">
+					<a id="clasifi" name="clasifi" href="#" onclick="clasif()"
+					onmouseover="this.style.color='red'"
+					onmouseover="this.style.color='red'"
+					onmouseout="this.style.color='black'"
+					style='font-weight: normal; font-size: 13px;'>Sort by CALL</a>
+				</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type='hidden' id='who'
+					name='who'> <input id="buscar" name="buscar" type="text"
+					size=5 style='height: 17px;'>&nbsp; <input
+					title='Highlight entries with...' type=button
+					onclick="window.parent.window.location.href='https://www.dev.browxy.com/builder/live/50/wsprset?call='+document.getElementById('buscar').value.toLowerCase();"
+					style='height: 18px; line-height: 12px; cursor: pointer;'
+					value='Search'> <span
+					style='font-size: 12px; font-weight: normal; border-left-style: solid; border-left-color: #aaa;'><i
+					style="padding-left: 4px;" id="flyingBalloonsActive"># Balloons
+						active</i></span>
+			</div>
+
+			<div
+				style='display: flex; flex-direction: column; border-right-width: 0px; border-left-width: 0px; border-top-width: 0px; border-bottom-width: 0px; border-bottom-color: #ffffff; background-color: #eeeeee; vertical-align: top; width: 185px;'>
+				<img name='globero' id='globero' onclick="show(this)"
+					style='width: 100%; height: 350px; border-radius: 15px; background-color: #eeeeee; cursor: pointer; max-height: 350px; margin: 0 auto;'
+					title='Click to show this image'
+					src='https://i.postimg.cc/PJ35Xs8s/picolu1esy.jpg'
+					height="315.588px"> <br style='line-height: 4px;'>
+				<div
+					style="display: flex; gap: 10px; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 15px;">
+					<a href='https://traquito.github.io/channelmap/' target='_blank'
+						title='See usage map&#13;on traquito site'
+						style='text-decoration: none; text-align: center;'>
+						<div id=uno name=uno
+							style='border: 5px; border-style: outset; text-decoration: none; border-color: orange; border-radius: 17px; box-shadow: 3px 3px 3px #999;'
+							onmouseover="this.style.color='red'"
+							onmouseout="this.style.color='black'">
+							<p>
+								BEFORE SETTING NEW ENTRY<br>
+							<p>
+								CHECK CHANNEL USAGE MAP<br>
+						</div>
+					</a>
+
+					<button onclick="event.preventDefault();getqrp();"
+						title='U4B/Traquito Channel Calculations'
+						style='text-decoration: none; text-align: center;'>
+						<div id=dos name=dos
+							style='border: 5px; border-style: outset; text-decoration: none; border-color: orange; border-radius: 17px; box-shadow: 3px 3px 3px #999;'
+							onmouseover="this.style.color='red'"
+							onmouseout="this.style.color='black'">
+							<p>
+								U4B/TRAQUITO CHANNEL<br>
+							<p>
+								ID & TIMESLOT CALCS<br>
+						</div>
+					</button>
+					<button title='Update Your Entry'
+						style='text-decoration: none; text-align: center;'>
+						<div id=tres name=tres
+							style='border: 5px; border-style: outset; text-decoration: none; border-color: orange; border-radius: 17px; box-shadow: 3px 3px 3px #999;'
+							onmouseover="this.style.color='red'"
+							onmouseout="this.style.color='black'">
+							<p>
+								TO UPDATE YOUR ENTRY<br>
+							<p>
+								CLICK ON YOUR ENTRY CALL<br>
+						</div>
+					</button>
+					<a
+						href='http://amsat.org.ar/comentar.html?comentario=To Hide or Restore an entry, go back, click on presets your entry Call                                 and click on Hide, Restore or Update, else enter your comment. Thanks!'
+						target='_blank'
+						title=' If your balloon ends flying&#13; please request delete entry&#13; ----------------------------&#13;   Will be kept in old entries&#13;where your flight can be seen&#13; ----------------------------&#13; Or Click on your entry call&#13; then click on Hide/Restore'
+						style='text-decoration: none; text-align: center;'>
+						<div id=delete
+							style='border: 5px; border-style: outset; text-decoration: none; border-color: orange; border-radius: 17px; box-shadow: 3px 3px 3px #999;'
+							onmouseover="this.style.color='red'"
+							onmouseout="this.style.color='black'">
+							<p>
+								IF BALLOON ENDS FLYING<br>
+							<p>
+								OR ENTRY IS DUPLICATED<br>
+							<p>
+								OR ENTRY NOT NEEDED<br>
+							<p>
+								SELECT CALL AND HIDE <b><u><i>PLEASE</i></u></b><br>
+						</div>
+					</a> <span
+						style='font-size: 16px; text-align: justify; font-family: Arial Narrow; line-height: 14px;'>
+						<i> Welcome !,&nbsp;&nbsp;&nbsp;if you are here,<br>perhaps
+							you are preparing a succesful pico balloon launch<br> <br
+							style='line-height: 8px;'>" Make sure you know what is<br>your
+							tracker and parameters<br>you have programmed on it.<br>
+						<br style='line-height: 8px;'>" <u>Take note of settings</u>
+							when<br>program and enter exactly<br>the <u>actual
+								settings on form</u><br>
+						<br style='line-height: 8px;'>" Set careful estimated launch<br>date/time,
+							wishing your flight<br>achieves the <u>best of success</u>.
+					</i>
+					</span> <a href='https://www.paypal.me/AMSATARGENTINA/'
+						title=' Please help keep site active, if possible&#13;&#xbb; Donate to Amsat Argentina, Thanks! &#xab;'
+						target='_blank' style='text-decoration: none;'>
+						<div style="display: flex; gap: 10px;">
+							<img src='https://i.postimg.cc/QtqMzW8M/pen.gif' /> <img
+								src='https://i.postimg.cc/wMTBYTMQ/pico.gif' height='62px'
+								width='50px' style='vertical-align: 50%;' />
+						</div>
+					</a>
+				</div>
+			</div>
+			<table id="balloonsTable" border=1 cellpadding=2 cellspacing=0
+				style='border-right-width: 0px; font-family: Tahoma; font-size: 16px; line-height: 13px; background-color: #ffffff; border-radius: 7px; width: 100%; border-left-width: 0px; border-bottom-width: 0px; border-top-width: 0px;'></table>
+		</div>
+
+		<div
+			style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 100%; margin-top: 10px;">
+			<div>
+				<center>
+					<a href='http://amsat.org.ar/comentar.html'
+						title='Send inquiry or comment or suggestion' target='_blank'
+						style='line-height: 13px; vertical-align: abstop;'><i
+						style='vertical-align: top; line-height: 12px; font-size: 14px; white-space: nowrap;'>Request
+							change, hide entry or add new entry <span
+							style='font-weight: normal;'>(Or enter data
+								below)&nbsp;(Or click your entry call to allow
+								Hide/Restore/Update)</span>
+					</i></a> <span
+						style='font-size: 13px; font-weight: normal; line-height: 15px;'></span>
+				</center>
+			</div>
+
+			<div
+				style="display: grid; grid-template-columns: auto auto auto; column-gap: 10px;">
+				<span
+					style='grid-column: 1/-1; font-size: 15px; line-height: 16px; font-weight: normal; white-space: nowrap;'><b><i>Suggested
+							Links</i>&nbsp;&#x25BD;</b></span>
+				<table border=0 cellpadding=0 cellspacing=0
+					style='font-family: Tahoma; font-size: 15px; line-height: 16px; vertical-align: top;'>
+					<tr>
+						<td style='vertical-align: top; white-space: nowrap;'>
+							<ul style='margin-bottom: 4px;'>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://github.com/kaduhi/sf-hab_rp2040_picoballoon_tracker_pcb_gen1'
+									target='_blank'><i><b>AG6NS Rp2040 Tracker</b></i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://github.com/EngineerGuy314/pico-WSPRer'
+									target='_blank'><i><b>KC3LBR Cheap Tracker</b></i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://traquito.github.io/' target='_blank'><i><b>KD2KDD
+												Traquito GIT</b></i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/picoballoon/files/K9YO-WSPR.pdf'
+									target='_blank'><i><b>K9YO Arduino Tracker</b></i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/picoballoon/messages' target='_blank'><i>picoballoon@groups.io</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/sf-hab/messages' target='_blank'><i>sf-hab@groups.io</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/BLT/messages' target='_blank'><i>groups.io/g/BLT</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/HABalloon/messages' target='_blank'><i>groups.io/g/HABalloon</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='http://amsat.org.ar/boya/buoy.html' target='_blank'><i>AMSAT-LU
+											Ocean Buoy</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.google.com/g/hamsci/c/1CAj7BBmb1o'
+									target='_blank'><i>KQ6RS Ocean Buoy</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='http://www.scientificballoonsolutions.com/trackers/'
+									target='_blank'><i>WSPR Trackers & SBS</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/QRPLabs/messages' target='_blank'><i>QRP-Labs@groups.io</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.google.com/g/ukhas/c/I09n72phtqU'
+									target='_blank'><i>UKHAS Picoballon</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://www.picoballoon.org/' target='_blank'><i>PicoBalloon
+											Project</i></a></li>
+								<li
+									style='list-style-type: square; color: green; margin-left: -11px;'><a
+									href='https://groups.io/g/Balloons/messages' target='_blank'><i>Radiosondes
+											group</i></a></li>
+							</ul> <input type=button name=clear id=clear
+							value='&nbsp;Clear this entry&nbsp;&#129149;&nbsp;'
+							onclick='event.preventDefault(); clearentries()'
+							title='Will not delete entry, just clear the form'
+							style='height: 19px; font-size: 12px; line-height: 10px; font-style: italic; border-style: outset; border-width: 3px; border-radius: 15px; border-color: orange; box-shadow: 2px 2px 2px #999;'
+							onmouseover="this.style.color='red'"
+							onmouseout="this.style.color='black'">
+						</td>
+					</tr>
+				</table>
+
+				<table border=0 cellpadding=0 cellspacing=0
+					style='font-family: Tahoma; font-size: 16px; line-height: 17px;'>
+					<tr>
+						<td colspan=4 align=center style='line-height: 15px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#x25BD;
+							Enter here new <b><u title='Enter only WSPR Balloons'
+								style='cursor: pointer;'><img
+									src='https://i.postimg.cc/CxdffJFs/aprs.png' height=14px
+									style='vertical-align: middle;'> & "HF WSPR</u></b> Balloon
+							description &#x25BD;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br
+							style='line-height: 1px;'>
+						</td>
+					</tr>
+					<tr>
+						<td
+							style='width: 70px; border: 1px solid gray; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px; cursor: pointer;'
+							title='Required'><b>Callsign:</b></td>
+						<td><input name=other id=other maxlength=9 size=13
+							style='height: 16px; border-bottom-width: 0px; border-right-width: 1px; text-transform: uppercase;'></td>
+						<td
+							style='border: 1px solid gray; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;'>&nbsp;</td>
+						<td
+							style='border: 1px solid gray; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;'>Balloon
+							Callsign <b><u>without</u></b> SSID
+						</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; cursor: pointer; white-space: nowrap;'
+							title='Required'><b>Band:</b></td>
+						<td colspan=3><select id='band' name='band'
+							style='width: 109px; height: 20px; background-color: white; text-align: left; font-weight: normal; font-size: 13px;'>
+								<option value='All'>All</option>
+								<option title='1.8 MHz' value='160m'>160m</option>
+								<option title='3.5 MHz' value='80m'>80m</option>
+								<option title='7 MHz' value='40m'>40m</option>
+								<option title='10 MHz' value='30m'>30m</option>
+								<option title='13 MHz' value='22m'>22m</option>
+								<option title='14 MHz' value='20m' selected='selected'>20m</option>
+								<option title='18 MHz' value='17m'>17m</option>
+								<option title='21 MHz' value='15m'>15m</option>
+								<option title='24 MHz' value='12m'>12m</option>
+								<option title='28 MHz' value='10m'>10m</option>
+								<option title='50 MHz' value='6m'>6m</option>
+								<option title='144 MHz' value='2m'>2m</option>
+						</select>&nbsp;20m or 30m or 10m or All</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'>Balloon-Id:&nbsp;</td>
+						<td><input name=balloonid id=balloonid maxlength=2 size=13
+							style='height: 16px; cursor: pointer; border-bottom-width: 0px; border-right-width: 1px; text-transform: lowercase;'
+							title='First (0,1,Q) and third (0-9)&#13;character of 2nd TLM packet&#13;or omit if no 2nd TLM packet&#13;Will be set if qrp-id entered'></td>
+						<td>&nbsp;&nbsp;</td>
+						<td style='cursor: pointer;'
+							title='First (0,1,Q) and third (0-9)&#13;character of 2nd TLM packet&#13;or omit if no 2nd TLM packet&#13;Will be set if qrp-id entered'>(*)
+							2 characters I.E. Q7 <i>(Or omit)</i>
+						</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'>Time-Slot:&nbsp;</td>
+						<td><input name=timeslot id=timeslot maxlength=1 size=13
+							title='Starting even minute of 2nd transmission&#13;Should be 2 min. after first transmission&#13;Will be auto set if QRP-ID is entered'
+							style='height: 16px; cursor: pointer; border-bottom-width: 0px; border-right-width: 1px;'></td>
+						<td>&nbsp;&nbsp;</td>
+						<td style='cursor: pointer;'
+							title='Starting even minute of 2nd transmission&#13;Should be 2 min. after first transmission&#13;Will be auto set if qrp-id channel entered'>(*)
+							1 digit minute I.E. 6 <i>(Or omit)</i>
+						</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'>Detail:</td>
+						<td><input name=detail id=detail maxlength=2 size=13
+							style='height: 16px; border-bottom-width: 0px; border-right-width: 1px;'></td>
+						<td>&nbsp;&nbsp;</td>
+						<td>on <i>(Or omit)</i></td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap; cursor: pointer;'
+							title='Required'><b>Launch:</b></td>
+						<td><input name=launch id=launch maxlength=14 size=13
+							style='height: 16px; border-bottom-width: 0px; border-right-width: 1px; background-image: url(images/rayas2.gif);'></td>
+						<td style='white-space: nowrap;'>&nbsp;&nbsp;</td>
+						<td style='white-space: nowrap;'>YYYYMMDDHHMMSS DateTime
+							(z)&nbsp;</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'>SSID:</td>
+						<td style='border-top-width: 3px;'><input name=SSID id=SSID
+							maxlength=3 size=4
+							style='height: 16px; border-bottom-width: 0px; border-right-width: 1px;'
+							title='Enter value from 1 to 999&#13;  If want upload to aprs.fi&#13; - If over 99 NO graphs !'
+							onclick="event.preventDefault();document.getElementById('repitospan').style.visibility='visible'">&nbsp;Upload:<span
+							style='visibility: hidden;'><input id='repitospan'
+								title='Check to preset upload to aprs.fi' type='checkbox'
+								id='repito' name='repito' checked></span></td>
+						<td>&nbsp;&nbsp;</td>
+						<td style='cursor: pointer;'
+							title='Enter value from 01 to 99&#13;  If want upload to aprs.fi&#13; - If over 99 NO graphs !'>SSID
+							for aprs.fi/sondehub upload</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'>Tracker:</td>
+						<td><input name=tracker id=tracker maxlength=14 size=5
+							title='Trackers: wb8elk, qrplabs, u4b, traquito, lightaprs, orion,&#13;zachtek1, yo3ict, dl6ow, ab5ss, oshpark, bss99, 6locators.&#13;Note: if tracker U4B, traquito or kc3lbr just enter qrpid&#13;Note: if tracker zachtek with 6 locators enter Zachtek1'
+							style='height: 16px; border-bottom-width: 1px; border-right-width: 1px; text-transform: lowercase;'>&nbsp;TeleN:<input
+							type=checkbox name='telen' id='telen'
+							title=' Check if use TELEN&#13;Valid only for KC3LBR&#13; or QRPLAB trackers'></td>
+						<td style='cursor: pointer;'>&nbsp;&nbsp;</td>
+						<td style='cursor: pointer;'
+							title='Trackers: wb8elk, qrplabs, u4b, traquito, lightaprs, orion, u4b, zachtek,&#13; zachtek1, yo3ict, dl6ow, ab5ss, oshpark, bss99, 6locators.&#13;Note: if tracker U4B, traquito or kc3lbr just enter qrpid&#13;Note: if tracker zachtek with 6 locators enter zachtek1&#13;          and also set timeslot programmed on Zachtek'>Tracker
+							used <i>(Or omit)</i>
+						</td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'>QRP-ID&nbsp;<span
+							style='font-size: 11px; line-height: 10px; font-family: Arial; font-weight: bold; background-color: #5a8742; color: white; border-color: green; border-style: outset; border-radius: 10px; cursor: pointer; text-shadow: 2px 2px 0 black, 4px 3px 0 gray;'
+							title='U4B Freqs' onclick='event.preventDefault();U4B();'>&nbsp;?&nbsp;</span></td>
+						<td><input name=qrp id=qrp maxlength=3
+							onclick="event.preventDefault();document.getElementById('wide').style.visibility='visible'"
+							size=5
+							style='height: 16px; border-bottom-width: 0px; border-right-width: 1px;'
+							title='If using U4B or Traquito&#13;Enter here Channel Nbr&#13;Or omit & enter Id+Tslot'>&nbsp;&nbsp;Wide:<input
+							type=checkbox name='wide' id='wide'
+							title='Check to use wider frequency for 2nd TLM'></td>
+						<td>&nbsp;&nbsp;</td>
+						<td style='cursor: pointer;'
+							title=' If using U4B or Traquito&#13;Enter here Chnl Number'>U4B/Traquito
+							Chnl Nbr<i> (Or omit)</i>
+						</td>
+					</tr>
+					<tr>
+						<td colspan=4
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'><span
+							style='font-family: Tahoma; font-size: 12px; line-height: 13px;'><i>(*)
+									Enter this data only if your Balloon has 2nd Telemetry
+									Transmission</i></span></td>
+					</tr>
+					<tr>
+						<td
+							style='border: 1px solid gray; border-bottom-width: 0px; border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; white-space: nowrap;'
+							colspan=4 align=left><input type="button"
+							onclick="checkform(event);" name="Send" id="Send"
+							style='border-style: outset; border-width: 3px; height: 26px; line-height: 16px; background: #0066A2; color: white; font-weight: bold; cursor: pointer; border-radius: 25px;'
+							value=' SEND New Balloon Description '>&nbsp; <input
+							type=button onclick='event.preventDefault();gohide()' name='hide'
+							id='hide'
+							style='height: 23px; font-size: 12px; line-height: 11px; vertical-align: middle; font-style: italic; border-style: outset; border-width: 3px; border-radius: 15px; border-color: orange; box-shadow: 2px 2px 2px #999; visibility: hidden;'
+							value='  Hide or Restore  '>&nbsp; <input type=button
+							onclick="event.preventDefault();document.getElementById('change').disabled='true'; document.getElementById('Send').click();"
+							title='  Enter Changes&#13;then click Update&#13;will add new entry'
+							name='change' id='change'
+							style='height: 23px; font-size: 12px; line-height: 11px; vertical-align: middle; font-style: italic; border-style: outset; border-width: 3px; border-radius: 15px; border-color: orange; box-shadow: 2px 2px 2px #999; visibility: hidden;'
+							value=' Update '>&nbsp; <br style='line-height: 3px;'>
+						</td>
+					</tr>
+				</table>
+
+				<div
+					style='vertical-align: top; line-height: 16px; font-size: 16px;'>
+					<div>
+						<b><u>DESCRIPTION / COMMENTS</u></b>&nbsp;<i>(Optional)</i><br>
+						<i>These will be shown if click on any entry call above and
+							while tracking</i><br>
+						<textarea name='comments' id='comments' rows='12' cols='65'
+							style='border-color: #696969; border-width: 1px; background-color: #eeeeee; height: 183px; width: 391px; font-size: 13px; line-height: 13px; font-family: Arial Narrow, Tahoma; overflow: hidden; background-image: url(images/rayas1.gif); resize: none;'></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div id=fotos name=fotos
+				style='width: fit-content; margin: 5px auto; white-space: nowrap; margin-top: 20px;'></div>
+	</form>
+</body>
+</html>
