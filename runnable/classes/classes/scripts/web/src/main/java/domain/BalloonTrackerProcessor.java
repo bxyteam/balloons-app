@@ -311,6 +311,22 @@ public class BalloonTrackerProcessor {
     return text.substring(valueStart, endPos);
   }
 
+  public String ping() {
+    JsonObject jsonResp = new JsonObject();
+    JsonObject responseJsonObjectData = new JsonObject();
+    
+    responseJsonObjectData.addProperty("name","Browxy Balloon Server");
+    responseJsonObjectData.addProperty("version", "1.0");
+    responseJsonObjectData.addProperty("servlet", "ping");
+
+    jsonResp.addProperty("statusCode", 200);
+    jsonResp.addProperty("timestamp", java.time.LocalDateTime.now().toString());
+    jsonResp.addProperty("message", "API is alive");
+    jsonResp.add("server", responseJsonObjectData);
+
+    return new Gson().toJson(jsonResp);
+  } 
+  
   private static String decodeBase64(String encodedString) {
     java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
     byte[] decodedBytes = decoder.decode(encodedString);

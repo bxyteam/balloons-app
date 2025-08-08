@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API Pinger</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    label, input, button {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 30px;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      background: #5be49b;
+      border-radius: 21px;
+    }
+
+    button.loading::after {
+      content: '';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 3px solid #00833d;
+      border-top: 3px solid #333;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>API Pinger</h1>
+  <label for="endpoint">API Endpoint:</label>
+  <input type="text" id="endpoint" placeholder="https://api.example.com/data" />
+
+  <button id="pingBtn">Ping</button>
+
+  <h3>Response:</h3>
+  <pre id="responseArea">No response yet.</pre>
+
+  <script>
+    const pingBtn = document.getElementById('pingBtn');
+    const responseArea = document.getElementById('responseArea');
+
+    pingBtn.addEventListener('click', async () => {
+      const endpoint = document.getElementById('endpoint').value.trim();
+
+      if (!endpoint) {
+        responseArea.textContent = 'Please enter a valid endpoint.';
+        return;
+      }
+
+      pingBtn.disabled = true;
+      pingBtn.classList.add('loading');
+      pingBtn.textContent = 'Pinging...';
+
+      try {
+       
+        const payload = {
+          method: endpoint,
+          arguments: JSON.stringify([]),
+          compileType: "Pom",
+          classToLoad: "domain.BalloonTrackerProcessor",
+          userCodePath: "src/main/java/domain/BalloonTrackerProcessor.java"
+        };
+
+        const body = JSON.stringify({
+          type: "http",
+          payload: JSON.stringify(payload),
+        });
+        
+        const response = await fetch("/api/v1/compilerService", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body
+        });
+        
+        const data = await response.json();
+        const dataPayload = JSON.parse(data.payload);           
+        responseArea.textContent = JSON.stringify(dataPayload, null, 2);
+        responseArea.classList.remove('error');
+        
+      } catch (err) {
+        responseArea.textContent = `Error: ${err.message}`;
+        responseArea.classList.add('error');
+      } finally {
+        pingBtn.disabled = false;
+        pingBtn.classList.remove('loading');
+        pingBtn.textContent = 'Ping';
+      }
+    });
+  </script>
+
+</body>
+</html>

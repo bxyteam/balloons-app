@@ -16,6 +16,7 @@ import com.browxy.balloons.server.servlets.api.v1.GetAliasServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetAssetServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetSessionServlet;
 import com.browxy.balloons.server.servlets.AdminGithubServlet;
+import com.browxy.balloons.server.servlets.PingServlet;
 import com.browxy.balloons.server.servlets.api.admin.v1.GithubSaveRepoAdminConfServlet;
 
 
@@ -67,6 +68,7 @@ public class BalloonWebServer {
     servletContextHandler.addServlet(new ServletHolder(new GetAliasServlet()), "/api/v1/getAlias");
     servletContextHandler.addServlet(new ServletHolder(new AdminGithubServlet()), "/admin/github");
     servletContextHandler.addServlet(new ServletHolder(new GithubSaveRepoAdminConfServlet()), "/api/admin/v1/saveGithubConf");
+    servletContextHandler.addServlet(new ServletHolder(new PingServlet()), "/admin/ping");
     servletContextHandler.setContextPath("/");
     return servletContextHandler;
   }
