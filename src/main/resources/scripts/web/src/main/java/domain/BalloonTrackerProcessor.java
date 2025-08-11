@@ -122,7 +122,9 @@ public class BalloonTrackerProcessor {
 
       this.processBalloonData(false, "", logs);
 
+      responseJsonObjectData.addProperty("statusCode", 200);
       responseJsonObjectData.addProperty("url", url);
+      responseJsonObjectData.addProperty("action", "SEND");
       jsonResp.add("data", responseJsonObjectData);
 
       jsonResp.addProperty("logs", logs.toString());
@@ -263,12 +265,13 @@ public class BalloonTrackerProcessor {
       responseJsonObjectData.addProperty("taskStateMessage", result.getMessage());
       responseJsonObjectData.addProperty("callSign", result.getCallsign());
       responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
-      //jsonResp.add("data", responseJsonObjectData);
+      responseJsonObjectData.addProperty("statusCode", 200);
+      jsonResp.add("data", responseJsonObjectData);
 
-      JsonObject jr = new JsonObject();
-      jr.add("data", responseJsonObjectData);
-      jr.addProperty("action", "HIDE_RESTORE");
-      jsonResp.add("data", jr);
+     // JsonObject jr = new JsonObject();
+      //jr.add("data", responseJsonObjectData);
+      //jr.addProperty("action", "HIDE_RESTORE");
+      //jsonResp.add("data", jr);
       
       jsonResp.addProperty("logs", logs.toString());
       jsonResp.addProperty("statusCode", 200);

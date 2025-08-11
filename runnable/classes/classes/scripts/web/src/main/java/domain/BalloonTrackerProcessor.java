@@ -62,7 +62,7 @@ public class BalloonTrackerProcessor {
   private String jsonOutput;
 
   public BalloonTrackerProcessor() {
-    this.thePath = "assets";
+    this.thePath = System.getenv("BASE_PATH") + File.separator + "share/assets";
     this.picossDataFile = this.thePath + File.separator + "picoss.txt";
     this.picoss1DataFile = this.thePath + File.separator + "picoss1.txt";
     this.datatrackerFile = this.thePath + File.separator + "datatracker.json";
@@ -122,7 +122,9 @@ public class BalloonTrackerProcessor {
 
       this.processBalloonData(false, "", logs);
 
+      responseJsonObjectData.addProperty("statusCode", 200);
       responseJsonObjectData.addProperty("url", url);
+      responseJsonObjectData.addProperty("action", "SEND");
       jsonResp.add("data", responseJsonObjectData);
 
       jsonResp.addProperty("logs", logs.toString());
@@ -143,7 +145,7 @@ public class BalloonTrackerProcessor {
       return new Gson().toJson(responseJsonObjectData);
     }
   }
-
+/*
   public String hideRestoreBalloon(String encodedJson) {
     JsonObject jsonResp = new JsonObject();
     JsonObject responseJsonObjectData = new JsonObject();
@@ -193,8 +195,14 @@ public class BalloonTrackerProcessor {
       responseJsonObjectData.addProperty("taskState", "NONE");
       responseJsonObjectData.addProperty("taskStateMessage", inventor);
       responseJsonObjectData.addProperty("callSign", "LEON-79");
-      jsonResp.add("data", responseJsonObjectData);
-
+      responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
+      //jsonResp.add("data", responseJsonObjectData);
+      
+      JsonObject jr = new JsonObject();
+      jr.add("data", responseJsonObjectData);
+      jr.addProperty("action", "HIDE_RESTORE");
+      jsonResp.add("data", jr);
+      
       jsonResp.addProperty("logs", logs.toString());
       jsonResp.addProperty("statusCode", 200);
       jsonResp.addProperty("action", "HIDE_RESTORE");
@@ -213,7 +221,7 @@ public class BalloonTrackerProcessor {
       return new Gson().toJson(responseJsonObjectData);
     }
   }
-  /*
+  */
 
   public String hideRestoreBalloon(String encodedJson) {
     JsonObject jsonResp = new JsonObject();
@@ -256,8 +264,15 @@ public class BalloonTrackerProcessor {
       responseJsonObjectData.addProperty("taskState", result.isSuccess() ? "RELOADING" : "NONE");
       responseJsonObjectData.addProperty("taskStateMessage", result.getMessage());
       responseJsonObjectData.addProperty("callSign", result.getCallsign());
+      responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
+      responseJsonObjectData.addProperty("statusCode", 200);
       jsonResp.add("data", responseJsonObjectData);
 
+     // JsonObject jr = new JsonObject();
+      //jr.add("data", responseJsonObjectData);
+      //jr.addProperty("action", "HIDE_RESTORE");
+      //jsonResp.add("data", jr);
+      
       jsonResp.addProperty("logs", logs.toString());
       jsonResp.addProperty("statusCode", 200);
       jsonResp.addProperty("action", "HIDE_RESTORE");
@@ -276,7 +291,7 @@ public class BalloonTrackerProcessor {
       return new Gson().toJson(responseJsonObjectData);
     }
   }
-*/
+
   public StringBuilder processBalloonData(boolean showMore, String newCall, StringBuilder logs) {
     List<String> lines = FileUtil.readFileSafe(this.picossDataFile);
 
