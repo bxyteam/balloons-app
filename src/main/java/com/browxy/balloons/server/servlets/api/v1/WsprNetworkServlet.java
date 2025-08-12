@@ -22,6 +22,44 @@ public class WsprNetworkServlet  extends HttpServlet {
   }
   
   @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      response.setContentType("text/plain");
+      try {
+          WsprQueryParams wsprQueryParams = new WsprQueryParams();
+
+          wsprQueryParams.setBand(request.getParameter("band"));
+          wsprQueryParams.setCount(request.getParameter("count"));
+          wsprQueryParams.setCall(request.getParameter("call"));
+          wsprQueryParams.setReporter(request.getParameter("reporter"));
+          wsprQueryParams.setTimeLimit(request.getParameter("timeLimit"));
+          wsprQueryParams.setSortBy(request.getParameter("sortBy"));
+          wsprQueryParams.setSortRev(request.getParameter("sortRev"));
+          wsprQueryParams.setUnique(request.getParameter("unique"));
+          wsprQueryParams.setMode(request.getParameter("mode"));
+          wsprQueryParams.setExcludeSpecial(request.getParameter("excludeSpecial"));
+
+          WsprNetwork wsprNetwork = new WsprNetwork();
+          String result = wsprNetwork.runWSPRQuery(wsprQueryParams);
+          response.setStatus(HttpServletResponse.SC_OK);
+          response.getWriter().write(result);
+      } catch (Exception ex) {
+          logger.error("Error in doGet wspr network context service", ex);
+          String errorMessage = (ex.getMessage() != null && !ex.getMessage().trim().isEmpty())
+                  ? ex.getMessage()
+                  : "An error has occurred in the connection";
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+          response.getWriter().write(errorMessage);
+      } finally {
+          try {
+              response.flushBuffer();
+              response.getWriter().close();
+          } catch (IOException e) {
+              logger.error("Error closing response", e);
+          }
+      }
+  }
+
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
       response.setContentType("text/plain");
       try {
