@@ -1,9 +1,12 @@
 package com.browxy.balloons.server;
 
 
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
@@ -16,6 +19,7 @@ import com.browxy.balloons.server.servlets.api.v1.GetAliasServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetAssetServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetSessionServlet;
 import com.browxy.balloons.server.servlets.api.v1.WsprNetworkServlet;
+import com.browxy.balloons.server.filter.CorsFilter;
 import com.browxy.balloons.server.servlets.AdminGithubServlet;
 import com.browxy.balloons.server.servlets.PingServlet;
 import com.browxy.balloons.server.servlets.api.admin.v1.GithubSaveRepoAdminConfServlet;
@@ -58,6 +62,9 @@ public class BalloonWebServer {
     sessionHandler.setMaxInactiveInterval(30 * 60);
     sessionHandler.addEventListener(new SessionCleanupListener());
 
+    FilterHolder corsFilter = new FilterHolder(new CorsFilter());
+    servletContextHandler.addFilter(corsFilter, "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC, DispatcherType.FORWARD));
+    
     servletContextHandler.addServlet(new ServletHolder(new SendStaticFileServlet()), "/*");
     servletContextHandler.addServlet(new ServletHolder(new CompilerServiceServlet()),
         "/api/v1/compilerService");
