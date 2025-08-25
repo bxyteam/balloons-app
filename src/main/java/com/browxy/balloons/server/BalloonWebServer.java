@@ -15,7 +15,7 @@ import com.browxy.balloons.run.SessionCleanupListener;
 import com.browxy.balloons.server.servlets.SendStaticFileServlet;
 import com.browxy.balloons.server.servlets.api.v1.CompilerServiceServlet;
 import com.browxy.balloons.server.servlets.api.v1.FileReaderServlet;
-import com.browxy.balloons.server.servlets.api.v1.FinduFetchServlet;
+import com.browxy.balloons.server.servlets.api.v1.WebFetcherServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetAliasServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetAssetServlet;
 import com.browxy.balloons.server.servlets.api.v1.GetSessionServlet;
@@ -76,7 +76,7 @@ public class BalloonWebServer {
         "/api/v1/getSession");
     servletContextHandler.addServlet(new ServletHolder(new GetAliasServlet()), "/api/v1/getAlias");
     servletContextHandler.addServlet(new ServletHolder(new WsprNetworkServlet()), "/api/v1/wsprNetwork");
-    servletContextHandler.addServlet(new ServletHolder(new FinduFetchServlet()), "/api/v1/finduFetcher");
+    servletContextHandler.addServlet(new ServletHolder(new WebFetcherServlet()), "/api/v1/webFetcher");
     servletContextHandler.addServlet(new ServletHolder(new AdminGithubServlet()), "/admin/github");
     servletContextHandler.addServlet(new ServletHolder(new GithubSaveRepoAdminConfServlet()), "/api/admin/v1/saveGithubConf");
     servletContextHandler.addServlet(new ServletHolder(new PingServlet()), "/admin/ping");
