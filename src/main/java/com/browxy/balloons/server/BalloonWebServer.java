@@ -22,8 +22,10 @@ import com.browxy.balloons.server.servlets.api.v1.GetSessionServlet;
 import com.browxy.balloons.server.servlets.api.v1.WsprNetworkServlet;
 import com.browxy.balloons.server.filter.CorsFilter;
 import com.browxy.balloons.server.servlets.AdminGithubServlet;
+import com.browxy.balloons.server.servlets.BalloonProcessorServlet;
 import com.browxy.balloons.server.servlets.PingServlet;
 import com.browxy.balloons.server.servlets.api.admin.v1.GithubSaveRepoAdminConfServlet;
+import com.browxy.balloons.server.servlets.api.admin.v1.ProcessBalloonTrackerServlet;
 
 
 public class BalloonWebServer {
@@ -79,6 +81,8 @@ public class BalloonWebServer {
     servletContextHandler.addServlet(new ServletHolder(new WebFetcherServlet()), "/api/v1/webFetcher");
     servletContextHandler.addServlet(new ServletHolder(new AdminGithubServlet()), "/admin/github");
     servletContextHandler.addServlet(new ServletHolder(new GithubSaveRepoAdminConfServlet()), "/api/admin/v1/saveGithubConf");
+    servletContextHandler.addServlet(new ServletHolder(new BalloonProcessorServlet()), "/admin/trackerProcessor");
+    servletContextHandler.addServlet(new ServletHolder(new ProcessBalloonTrackerServlet()), "/api/admin/v1/processBalloons");
     servletContextHandler.addServlet(new ServletHolder(new PingServlet()), "/admin/ping");
     servletContextHandler.setContextPath("/");
     return servletContextHandler;

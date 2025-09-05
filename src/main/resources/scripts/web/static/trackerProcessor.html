@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tracker Processor</title>
+<style>
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Segoe UI', sans-serif;
+	background: #f4f7f8;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.container {
+	background: white;
+	padding: 2rem;
+	border-radius: 10px;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 400px;
+}
+
+form h2 {
+	text-align: center;
+	margin-bottom: 1.5rem;
+	color: #333;
+}
+
+label {
+	display: block;
+	margin-top: 1rem;
+	font-weight: 500;
+	color: #555;
+}
+
+input[type="text"] {
+	width: 100%;
+	padding: 0.6rem;
+	margin-top: 0.3rem;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+	border-color: #007BFF;
+	outline: none;
+}
+
+button {
+	width: 100%;
+	padding: 0.75rem;
+	margin-top: 1.5rem;
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	border-radius: 6px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background 0.3s;
+}
+
+button:disabled {
+	background-color: #aaa;
+	cursor: not-allowed;
+	position: relative;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+.spinner {
+	border: 3px solid rgba(255, 255, 255, 0.3);
+	border-top: 3px solid #fff;
+	border-radius: 50%;
+	width: 16px;
+	height: 16px;
+	animation: spin 0.8s linear infinite;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+
+@
+keyframes spin { 
+0% {
+	transform: rotate(0deg);
+   }
+
+100% {
+  transform: rotate(360deg);
+  }
+}
+
+#responseMessage {
+	max-height: 200px;
+    overflow: auto;
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 18px;
+      font-weight: bold;
+    }
+</style>
+</head>
+<body>
+	<div class="container">
+		<form id="form">
+			<h2>Tracker Execution Form</h2>
+
+			<label for="method">Method</label> <input type="text" id="method"
+				name="method" value="runTrackerProcessor" required> <label
+				for="arguments">Arguments</label> <input type="text" id="arguments"
+				name="arguments" value="[]" required> <label
+				for="compileType">Compile Type</label> <input type="text"
+				id="compileType" name="compileType" value="Pom" required> <label
+				for="classToLoad">Class To Load</label> <input type="text"
+				id="classToLoad" name="classToLoad"
+				value="domain.BalloonTrackerProcessor" required> <label
+				for="userCodePath">User Code Path</label> <input type="text"
+				id="userCodePath" name="userCodePath"
+				value="src/main/java/domain/BalloonTrackerProcessor.java" required>
+
+			<button type="submit" id="submitBtn">
+				Submit <span class="spinner" id="spinner" style="display: none;"></span>
+			</button>
+			<pre id="responseMessage"></pre>
+		</form>
+	</div>
+
+	<script>
+	document.getElementById('form').addEventListener('submit', async (event) => {
+	  event.preventDefault(); 
+     
+	  const submitBtn = document.getElementById('submitBtn');
+	  const spinner = document.getElementById('spinner');
+	  const responseMessage = document.getElementById('responseMessage');
+	  const form = event.target;
+	  
+	  submitBtn.disabled = true;
+	  spinner.style.display = 'inline-block';
+	  responseMessage.innerText = 'Processing...';
+	  
+	  const data = {
+	    method: form.method.value.trim(),
+	    arguments: form.arguments.value.trim(),
+	    compileType: form.compileType.value.trim(),
+	    classToLoad: form.classToLoad.value.trim(),
+	    userCodePath: form.userCodePath.value.trim(),
+	  };
+
+      const body = JSON.stringify({
+        type: "balloon_processor",
+        payload: JSON.stringify(data),
+      });
+      
+	  try {
+	    const response = await fetch('/api/admin/v1/processBalloons', { 
+	      method: 'POST',
+	      headers: {
+	        'Content-Type': 'application/json',
+	      },
+	      body
+	    });
+
+	    const json = await response.json();
+	    let payload = JSON.parse(json.message);
+	    if(json.statusCode === 200) {
+		    payload = JSON.parse(payload.payload)      
+	    }
+	    let output = payload;
+	    if (payload.statusCode !== 200) { 
+	      if (!payload.error) {
+	        output = {
+	          statusCode: payload.statusCode,
+	          message: payload.message,
+	        };
+	      }
+	    }
+
+	    if (typeof payload.data === "string") {
+	      output = {
+	        statusCode: 200,
+	        ...JSON.parse(payload.data),
+	      };
+	    }
+
+	    responseMessage.innerText = JSON.stringify(output, null, 2); 
+	   
+	  } catch (error) {
+	    console.error('Request failed:', error);
+	    responseMessage.innerText = `Error sending form. ${error?.message}`;
+	  }  finally {
+	      submitBtn.disabled = false;
+	      spinner.style.display = 'none';
+	  }
+	});
+
+  </script>
+</body>
+</html>
