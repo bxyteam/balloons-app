@@ -56,10 +56,10 @@ public class BalloonDataProcessor {
   // "launch", "SSID", "tracker", "qrpid", "comments" };
 
   private static final String[] JSON_FIELD_ORDER = {"other", "banda", "balloonid", "timeslot",
-      "detail", "launch", "SSID", "tracker", "qrpid", "comments"};
+      "detail", "launch", "SSID", "tracker", "qrpid", "comments", "old"};
 
   public BalloonDataProcessor() {
-    initialize(false, "");
+    initialize(true, "");
   }
 
   public BalloonDataProcessor(boolean showMore, String newCall) {
@@ -163,6 +163,8 @@ public class BalloonDataProcessor {
     Balloon balloon = this.gson.fromJson(jsonParams, Balloon.class);
     balloon.setUrl(cleanedLine);
     balloon.setLine(originalLine);
+    String old = originalLine.startsWith("//") ? "true" : "false"; 
+    balloon.setOld(old);        
 
     // Extract comments
     String comments = extractComments(balloon.getComments());
@@ -170,7 +172,7 @@ public class BalloonDataProcessor {
 
     // Add to call signs
     String otherValue = balloon.getOther();
-    if (otherValue != null && !otherValue.isEmpty()) {
+    if (otherValue != null && !otherValue.isEmpty() && old.equals("false")) {
       callSigns.add(otherValue.toUpperCase());
     }
 
@@ -270,9 +272,9 @@ public class BalloonDataProcessor {
         case '\\':
           return "\\\\";
         case '\'':
-          return "\\'";
+          return "\\\\'";
         case '"':
-          return "\\\"";
+          return "\\\\"";
         case '\n':
           return "\\n";
         case '\r':

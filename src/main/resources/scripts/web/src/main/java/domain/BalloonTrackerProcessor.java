@@ -83,8 +83,8 @@ public class BalloonTrackerProcessor {
     JsonObject responseJsonObjectData = new JsonObject();
     StringBuilder logs = new StringBuilder();
     try {
-      this.processBalloonData(false, "", logs);
-
+      this.processBalloonData(true, "", logs);
+     // this.processBalloonData(false, "", logs);
       responseJsonObjectData.addProperty("statusCode", 200);
       jsonResp.add("data", responseJsonObjectData);
       jsonResp.addProperty("logs", logs.toString());
@@ -144,8 +144,8 @@ public class BalloonTrackerProcessor {
         return new Gson().toJson(responseJsonObjectData);
       }
 
-      this.processBalloonData(false, "", logs);
-
+      this.processBalloonData(true, "", logs);
+      //this.processBalloonData(false, "", logs);
       responseJsonObjectData.addProperty("statusCode", 200);
       responseJsonObjectData.addProperty("url", url);
       responseJsonObjectData.addProperty("action", "SEND");
@@ -263,7 +263,8 @@ public class BalloonTrackerProcessor {
           balloonHideRestoreProcessor.picossDataFile(decodedString);
 
       if (result.isSuccess()) {
-        this.processBalloonData(false, "", logs);
+        this.processBalloonData(true, "", logs);
+        // this.processBalloonData(false, "", logs);
       }
 
       responseJsonObjectData.addProperty("taskState", result.isSuccess() ? "RELOADING" : "NONE");
