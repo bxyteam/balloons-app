@@ -274,7 +274,7 @@ public class BalloonDataProcessor {
         case '\'':
           return "\\\\'";
         case '"':
-          return "\\\\"";
+          return "\\\"";
         case '\n':
           return "\\n";
         case '\r':
