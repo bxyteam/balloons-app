@@ -3,28 +3,38 @@ package com.browxy.balloons.domain.compiler.message;
 import com.browxy.balloons.domain.compiler.lang.java.CompileType;
 
 public class JavaMessage extends BaseMessage implements Message {
-	private CompileType compileType;
-	private String classToLoad;
-	
-	public JavaMessage() {
-		super();
-	}
+  private CompileType compileType;
+  private String classToLoad;
+  private boolean forceCompile = false;
 
-	public CompileType getCompileType() {
-		return compileType;
-	}
+  public JavaMessage() {
+    super();
+    this.forceCompile = false;
+  }
 
-	public void setCompileType(CompileType compileType) {
-		this.compileType = compileType;
-	}
+  public CompileType getCompileType() {
+    return compileType;
+  }
 
-	public String getClassToLoad() {
-		return classToLoad;
-	}
+  public void setCompileType(CompileType compileType) {
+    this.compileType = compileType;
+  }
 
-	public void setClassToLoad(String classToLoad) {
-		this.classToLoad = classToLoad;
-	}
-	
-	
+  public String getClassToLoad() {
+    return classToLoad;
+  }
+
+  public void setClassToLoad(String classToLoad) {
+    this.classToLoad = classToLoad;
+  }
+
+  public boolean isForceCompile() {
+    return forceCompile;
+  }
+
+  public void setForceCompile(boolean forceCompile) {
+    this.forceCompile = forceCompile;
+  }
+
+
 }

@@ -10,7 +10,7 @@
 <title>Balloons Presets</title>
 
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/css/styleWsprset.min.css">
+	href="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/css/styleWsprset.min.css">
 
 <style>
 .spinner-overlay {
@@ -37,7 +37,7 @@
 
 @
 keyframes spin {to { transform:rotate(360deg);
-	
+
 }
 }
 </style>
@@ -53,7 +53,7 @@ const readAsset = async ({ assetOutputType, assetUrl }) => {
 
 	const loadDataTrackerjson = async () => {
   	try {
-    		window.HOST_URL = `${new URL(window.parent.window.location.href).origin}`; 
+    		window.HOST_URL = `${new URL(window.parent.window.location.href).origin}`;
     		const browxySite =
       		HOST_URL === "https://www.dev.browxy.com" ||
       		HOST_URL === "https://www.browxy.com";
@@ -69,7 +69,7 @@ const readAsset = async ({ assetOutputType, assetUrl }) => {
         			assetOutputType: "txt",
         			assetUrl: assetUrl,
       		});
-  
+
       		if (assetUrlResp.statusCode !== 200) {
         			console.error(assetUrlResp.error);
         			return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };
@@ -79,7 +79,7 @@ const readAsset = async ({ assetOutputType, assetUrl }) => {
         			assetOutputType: "json",
         			assetUrl: assetUrlResp.data,
       		});
-     
+
       		if (response.statusCode !== 200) {
         			console.error(response.error);
         			return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };
@@ -95,18 +95,18 @@ const readAsset = async ({ assetOutputType, assetUrl }) => {
     		return serverResponse;
     	} catch (error) {
     		console.error(error);
-    		return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };   
-  	 } 
+    		return { balloons: [], jsonArray: "[]", licenseData: [], newCalls: "", validCount: 0 };
+  	 }
   };
-</script>  
+</script>
 
 <script
-	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/assetsSrc.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/commonAll.min.js"></script>
+	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/assetsSrc.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/commonAll.min.js"></script>
 <script
-	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/indexWsprset.min.js"></script>
+	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/indexWsprset.min.js"></script>
 <script
-	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/ballonTracker.min.js"></script>
+	src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/ballonTracker.min.js"></script>
 
 </head>
 

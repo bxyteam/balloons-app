@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.browxy.balloons.domain.Application;
 import com.browxy.balloons.util.MimeTypeUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class BalloonProcessorServlet extends HttpServlet {
   
@@ -54,9 +52,6 @@ public class BalloonProcessorServlet extends HttpServlet {
   private String buildHtmlMetadata(File file) throws IOException {
     String content = new String(Files.readAllBytes(file.toPath()));
     return content;
-//    Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
-//    String conf = gson.toJson(Application.getInstance().getBalloonGithubConfig());
-//    return content.replace("%%BALLOON_DATA%%;", conf);
   }
 
 }

@@ -59,7 +59,7 @@ public class JavaResponseHandler implements ResponseMessage {
 		String containerBasePath = Application.getInstance().getBalloonWebConfig().getBasePath();
 		File userCodeFile = new File(containerBasePath + File.separator + message.getUserCodePath());
 
-		if (cachedUserClass == null || userCodeFile.lastModified() > lastModified) {
+		if (cachedUserClass == null || userCodeFile.lastModified() > lastModified || message.isForceCompile()) {
 			logger.info("User code change detected. Recompiling...");
 
 			lastModified = userCodeFile.lastModified();

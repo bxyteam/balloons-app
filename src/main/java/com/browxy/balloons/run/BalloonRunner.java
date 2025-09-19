@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.slf4j.LoggerFactory;
+import com.browxy.balloons.domain.GithubSyncManager;
 import com.browxy.balloons.domain.config.Config;
 import com.browxy.balloons.domain.config.ConfigResource;
 import com.browxy.balloons.server.BalloonWebServer;
@@ -29,7 +30,7 @@ public class BalloonRunner {
 
     updateLog4jConfiguration("logback." + environment + ".xml");
    
-
+    new GithubSyncManager();
     
     int port = getPort();  
     new BalloonWebServer(port);

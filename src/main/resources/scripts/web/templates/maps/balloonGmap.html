@@ -16,9 +16,9 @@
             type="text/javascript"
             src="https://www.google.com/jsapi"
         ></script>
-        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/assetsSrc.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/indexGmap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/js/suncalc.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/assetsSrc.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/indexGmap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/suncalc.min.js"></script>
     </head>
     <body>
         <div style="position: relative; width: 100%; height: 100%">
@@ -371,7 +371,6 @@
                         event.origin === "http://localhost:5000"
                     ) {
                         const jsonData = event.data.props.jsonData;
-                        console.log("JSON recibido:", jsonData);
 
                         window.locations = jsonData.locations;
                         window.flechas = jsonData.flechas;
