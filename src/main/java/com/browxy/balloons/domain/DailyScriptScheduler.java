@@ -66,8 +66,8 @@ public class DailyScriptScheduler {
 
   private void scheduleDailyTask(LocalTime targetTime) {
     long initialDelay = calculateInitialDelay(targetTime);
-    // long period = TimeUnit.DAYS.toSeconds(1);
-    long period = TimeUnit.MINUTES.toSeconds(5); // 5 minutes in seconds
+     long period = TimeUnit.DAYS.toSeconds(1);
+    //long period = TimeUnit.MINUTES.toSeconds(5); // 5 minutes in seconds
 
     scheduler.scheduleAtFixedRate(() -> {
       syncGithub();
