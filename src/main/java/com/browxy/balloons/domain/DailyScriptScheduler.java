@@ -66,8 +66,8 @@ public class DailyScriptScheduler {
 
   private void scheduleDailyTask(LocalTime targetTime) {
     long initialDelay = calculateInitialDelay(targetTime);
-     long period = TimeUnit.DAYS.toSeconds(1);
-    //long period = TimeUnit.MINUTES.toSeconds(5); // 5 minutes in seconds
+     //long period = TimeUnit.DAYS.toSeconds(1);
+    long period = TimeUnit.MINUTES.toSeconds(5); // 5 minutes in seconds
 
     scheduler.scheduleAtFixedRate(() -> {
       syncGithub();
@@ -133,6 +133,7 @@ public class DailyScriptScheduler {
       if(copyBalloonsProcessor) {
         this.compileChanges();
       }
+      this.runBalloonTrackerProcessor();
     } catch (Exception e) {
       logger.error("Error executing script: " + scriptCopyFilesFilePath, e);
     }
@@ -161,7 +162,7 @@ public class DailyScriptScheduler {
       logger.error("Script failed with exit code: " + exitCode);
     }
   }
-
+  
   private void compileChanges() {
     String message = "{"
         + "\"type\":\"http\","
@@ -169,14 +170,30 @@ public class DailyScriptScheduler {
         + "}";
 
     logger.info("Compile balloon data processor changes... " + message);
+    String result = executeBalloonDataProc(message);
+    logger.info("Compiler changes result: " + result);
+  }
+  
+  private void runBalloonTrackerProcessor() {
+    String message = "{"
+        + "\"type\":\"http\","
+        + "\"payload\":\"{\\\"method\\\":\\\"runTrackerProcessor\\\",\\\"arguments\\\":\\\"[]\\\",\\\"compileType\\\":\\\"Pom\\\",\\\"classToLoad\\\":\\\"domain.BalloonTrackerProcessor\\\",\\\"userCodePath\\\":\\\"src/main/java/domain/BalloonTrackerProcessor.java\\\"}\""
+        + "}";
+    logger.info("Execute balloon data processor tracker... " + message);
+    int n = 100;
+    String result = executeBalloonDataProc(message);
+    logger.info("Tracking execution finnished... ", result.length() > n ? result.substring(0, n) : result);
+  }
+
+  private String executeBalloonDataProc(String apiMessage) {
     Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
-    ApiMessage responseBuilder = gson.fromJson(message, ApiMessage.class);
+    ApiMessage responseBuilder = gson.fromJson(apiMessage, ApiMessage.class);
     ResponseHandler responseHandler = new ResponseHandler(responseBuilder.getPayload());
     ((JavaMessage) responseHandler.getMessage()).setForceCompile(true);
     String result = this.buildResponse(gson, responseHandler, responseBuilder.getType());
-    logger.info("Compiler changes result: " + result);
+    return result;
   }
-
+  
   private String buildResponse(Gson gson, ResponseHandler responseHandler, String type) {
     ApiMessage responseBuilder = new ApiMessage(responseHandler.getResponse(), type);
     return gson.toJson(responseBuilder, ApiMessage.class);
