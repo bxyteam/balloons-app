@@ -47,7 +47,7 @@ public class Application {
     String json = Config.getInstance().getStringValue("web.config");
     try {
       BalloonWebConfig conf = JSONUtils.fromJson(json, BalloonWebConfig.class);
-      String entryPoint = System.getenv("ENTRY_POINT") != null && !System.getenv("ENTRY_POINT").trim().isEmpty() ? System.getenv("ENTRY_POINT").trim() : "pass";  
+      String entryPoint = System.getenv("ENTRY_POINT") != null && !System.getenv("ENTRY_POINT").trim().isEmpty() ? System.getenv("ENTRY_POINT").trim() : "wsprx";  
       String token = System.getenv("TOKEN") != null ? System.getenv("TOKEN").trim() : "";  
       conf.setEntryPoint(entryPoint);
       conf.setToken(token);
