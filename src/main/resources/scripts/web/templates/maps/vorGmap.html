@@ -21,6 +21,7 @@
             }
         </style>
         <script type="text/javascript">
+            window.PARENT_URL = "https://balloons.dev.browxy.com";
             function initMap() {
                 console.log("initMap called");
             }
@@ -51,7 +52,6 @@
         <script>
             window.addEventListener("message", (event) => {
                 if (
-                    event.origin === "http://localhost:5000" ||
                     event.origin === "https://balloons.browxy.com" ||
                     event.origin === "https://balloons.dev.browxy.com"
                 ) {

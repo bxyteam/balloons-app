@@ -6,6 +6,7 @@
         <title>Balloon Gmap</title>
         <style></style>
         <script type="text/javascript">
+            window.PARENT_URL = "https://balloons.dev.browxy.com";
             function initMap() {}
         </script>
         <script
@@ -367,8 +368,7 @@
                 (event) => {
                     if (
                         event.origin === "https://balloons.browxy.com" ||
-                        event.origin === "https://balloons.dev.browxy.com" ||
-                        event.origin === "http://localhost:5000"
+                        event.origin === "https://balloons.dev.browxy.com"
                     ) {
                         const jsonData = event.data.props.jsonData;
 
