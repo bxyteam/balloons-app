@@ -21,7 +21,7 @@ RUN chmod ugo+rw /etc/hosts.default
 RUN mkdir -p /home/balloon/application
 RUN mkdir -p /home/balloon/.m2
 # RUN mkdir -p /home/balloon/.m2/com/browxy
-COPY ./target/runnable /home/balloon/application
+COPY ./runnable /home/balloon/application
 RUN chown -R compiler:users /home/balloon/application
 RUN chown -R compiler:users /home/balloon/.m2
 RUN chmod ugo+x /home/balloon/application/*.sh
