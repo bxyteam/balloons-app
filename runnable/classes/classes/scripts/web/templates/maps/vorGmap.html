@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" style="overflow: hidden">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vor Gmap</title>
+        <style>
+            .spinner {
+                width: 50px;
+                height: 50px;
+                margin: 10px auto;
+                border: 8px solid #ccc;
+                border-top-color: #24b686;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        <script type="text/javascript">
+            window.PARENT_URL = "https://balloons.dev.browxy.com";
+            function initMap() {
+                console.log("initMap called");
+            }
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/jsDraw2DX.js"></script>
+        <script
+            type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAACTum6vjLOeCDgGj6EFFnzJMe7r8xOII&loading=async&callback=initMap"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/assetsSrc.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/vorGmap.min.js"></script>
+    </head>
+    <body style="height: 100dvh">
+        <div id="gMapLoader" class="spinner"></div>
+        <div
+            id="map"
+            style="
+                width: 100%;
+                height: 98%;
+                font-size: 12px;
+                font-weight: normal;
+                visibility: hidden;
+                margin: 0 auto;
+            "
+        ></div>
+
+        <script>
+            window.addEventListener("message", (event) => {
+                if (
+                    event.origin === "https://balloons.browxy.com" ||
+                    event.origin === "https://balloons.dev.browxy.com"
+                ) {
+                    try {
+                        switch (event.data.action) {
+                            case "SHOW_MAP":
+                                processJsonData(event.data.props.jsonData);
+                                break;
+                            case "LOAD_MAP_STATE":
+                                loadMapState(event.data.props?.mapState);
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (error) {
+                        console.error("Error al analizar el JSON:", error);
+                        displayError(error.message);
+                    } finally {
+                        showMap();
+                    }
+                } else {
+                    console.error(
+                        "Mensaje recibido desde una fuente no autorizada:",
+                        event,
+                    );
+                    displayError(
+                        "Mensaje recibido desde una fuente no autorizada",
+                    );
+                    showMap();
+                }
+            });
+        </script>
+    </body>
+</html>

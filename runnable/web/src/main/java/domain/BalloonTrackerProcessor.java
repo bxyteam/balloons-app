@@ -78,6 +78,30 @@ public class BalloonTrackerProcessor {
     // this.grabar = true;
   }
 
+  public String runTrackerProcessor() {
+    JsonObject jsonResp = new JsonObject();
+    JsonObject responseJsonObjectData = new JsonObject();
+    StringBuilder logs = new StringBuilder();
+    try {
+      this.processBalloonData(true, "", logs);
+     // this.processBalloonData(false, "", logs);
+      responseJsonObjectData.addProperty("statusCode", 200);
+      jsonResp.add("data", responseJsonObjectData);
+      jsonResp.addProperty("logs", logs.toString());
+      jsonResp.addProperty("statusCode", 200);
+      return new Gson().toJson(jsonResp);
+      
+    } catch (Exception e) {
+
+      logs.append("[ ERROR ] - [ NOT ALL TASKS COULD BE COMPLETED DUE TO AN ERROR ] - [ FAIL ]\n");
+      e.printStackTrace();
+      logs.append(e.getMessage());
+      jsonResp.addProperty("message", logs.toString());
+      responseJsonObjectData.addProperty("statusCode", 400);
+      responseJsonObjectData.add("error", jsonResp);
+      return new Gson().toJson(responseJsonObjectData);
+    }
+  }
 
   public String saveBalloon(String encodedJson) {
     JsonObject jsonResp = new JsonObject();
@@ -120,8 +144,8 @@ public class BalloonTrackerProcessor {
         return new Gson().toJson(responseJsonObjectData);
       }
 
-      this.processBalloonData(false, "", logs);
-
+      this.processBalloonData(true, "", logs);
+      //this.processBalloonData(false, "", logs);
       responseJsonObjectData.addProperty("statusCode", 200);
       responseJsonObjectData.addProperty("url", url);
       responseJsonObjectData.addProperty("action", "SEND");
@@ -145,83 +169,64 @@ public class BalloonTrackerProcessor {
       return new Gson().toJson(responseJsonObjectData);
     }
   }
-/*
-  public String hideRestoreBalloon(String encodedJson) {
-    JsonObject jsonResp = new JsonObject();
-    JsonObject responseJsonObjectData = new JsonObject();
-    StringBuilder logs = new StringBuilder();
-    try {
-
-
-      String decodedJson = decodeBase64(encodedJson);
-      Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
-      JsonObject jsonObject = gson.fromJson(decodedJson, JsonObject.class);
-
-      String jsonBalloon =
-          jsonObject.has("jsonBalloon")
-              ? !jsonObject.get("jsonBalloon").isJsonNull()
-                  ? jsonObject.get("jsonBalloon").getAsString()
-                  : null
-              : null;
-
-      if (jsonBalloon == null) {
-        logs.append("[ ERROR ] - [ BALLON DATA NOT FOUND ] - [ FAIL ]\n");
-        jsonResp.addProperty("message", logs.toString());
-        responseJsonObjectData.addProperty("statusCode", 400);
-        responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
-        responseJsonObjectData.add("error", jsonResp);
-        return new Gson().toJson(responseJsonObjectData);
-      }
-
-      String decodedString = decodeBase64(jsonBalloon);
-
-//      BalloonHideRestoreProcessor balloonHideRestoreProcessor =
-//          new BalloonHideRestoreProcessor(this.picossDataFile, this.picoss1DataFile);
-//      RequestCheckWsprProcessResult result =
-//          balloonHideRestoreProcessor.picossDataFile(decodedString);
-//
-//      if (result.isSuccess()) {
-//        this.processBalloonData(false, "", logs);
-//      }
-
-      String inventor = System.getenv("BALLOON_INVENTOR") != null ? System.getenv("BALLOON_INVENTOR") : "ESTO NO FUNCIONA!!";
-      try {
-        FileUtil.writeFile(this.thePath + File.separator + "inventor.txt", inventor );
-        logs.append("Todas las operaciones se ejecutaron exitosamente.");
-      } catch (IOException e) {
-        logs.append("Se produjo un error al ejucutar ballon data processor.");
-      }
-      
-      responseJsonObjectData.addProperty("taskState", "NONE");
-      responseJsonObjectData.addProperty("taskStateMessage", inventor);
-      responseJsonObjectData.addProperty("callSign", "LEON-79");
-      responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
-      //jsonResp.add("data", responseJsonObjectData);
-      
-      JsonObject jr = new JsonObject();
-      jr.add("data", responseJsonObjectData);
-      jr.addProperty("action", "HIDE_RESTORE");
-      jsonResp.add("data", jr);
-      
-      jsonResp.addProperty("logs", logs.toString());
-      jsonResp.addProperty("statusCode", 200);
-      jsonResp.addProperty("action", "HIDE_RESTORE");
-
-      return new Gson().toJson(jsonResp);
-
-    } catch (Exception e) {
-
-      logs.append("[ ERROR ] - [ NOT ALL TASKS COULD BE COMPLETED DUE TO AN ERROR ] - [ FAIL ]\n");
-      e.printStackTrace();
-      logs.append(e.getMessage());
-      jsonResp.addProperty("message", logs.toString());
-      responseJsonObjectData.addProperty("statusCode", 400);
-      responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
-      responseJsonObjectData.add("error", jsonResp);
-      return new Gson().toJson(responseJsonObjectData);
-    }
-  }
-  */
+  /*
+   * public String hideRestoreBalloon(String encodedJson) { JsonObject jsonResp = new JsonObject();
+   * JsonObject responseJsonObjectData = new JsonObject(); StringBuilder logs = new StringBuilder();
+   * try {
+   * 
+   * 
+   * String decodedJson = decodeBase64(encodedJson); Gson gson = new
+   * GsonBuilder().serializeNulls().disableHtmlEscaping().create(); JsonObject jsonObject =
+   * gson.fromJson(decodedJson, JsonObject.class);
+   * 
+   * String jsonBalloon = jsonObject.has("jsonBalloon") ?
+   * !jsonObject.get("jsonBalloon").isJsonNull() ? jsonObject.get("jsonBalloon").getAsString() :
+   * null : null;
+   * 
+   * if (jsonBalloon == null) { logs.append("[ ERROR ] - [ BALLON DATA NOT FOUND ] - [ FAIL ]\n");
+   * jsonResp.addProperty("message", logs.toString());
+   * responseJsonObjectData.addProperty("statusCode", 400);
+   * responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
+   * responseJsonObjectData.add("error", jsonResp); return new
+   * Gson().toJson(responseJsonObjectData); }
+   * 
+   * String decodedString = decodeBase64(jsonBalloon);
+   * 
+   * // BalloonHideRestoreProcessor balloonHideRestoreProcessor = // new
+   * BalloonHideRestoreProcessor(this.picossDataFile, this.picoss1DataFile); //
+   * RequestCheckWsprProcessResult result = //
+   * balloonHideRestoreProcessor.picossDataFile(decodedString); // // if (result.isSuccess()) { //
+   * this.processBalloonData(false, "", logs); // }
+   * 
+   * String inventor = System.getenv("BALLOON_INVENTOR") != null ? System.getenv("BALLOON_INVENTOR")
+   * : "ESTO NO FUNCIONA!!"; try { FileUtil.writeFile(this.thePath + File.separator +
+   * "inventor.txt", inventor ); logs.append("Todas las operaciones se ejecutaron exitosamente."); }
+   * catch (IOException e) { logs.append("Se produjo un error al ejucutar ballon data processor.");
+   * }
+   * 
+   * responseJsonObjectData.addProperty("taskState", "NONE");
+   * responseJsonObjectData.addProperty("taskStateMessage", inventor);
+   * responseJsonObjectData.addProperty("callSign", "LEON-79");
+   * responseJsonObjectData.addProperty("action", "HIDE_RESTORE"); //jsonResp.add("data",
+   * responseJsonObjectData);
+   * 
+   * JsonObject jr = new JsonObject(); jr.add("data", responseJsonObjectData);
+   * jr.addProperty("action", "HIDE_RESTORE"); jsonResp.add("data", jr);
+   * 
+   * jsonResp.addProperty("logs", logs.toString()); jsonResp.addProperty("statusCode", 200);
+   * jsonResp.addProperty("action", "HIDE_RESTORE");
+   * 
+   * return new Gson().toJson(jsonResp);
+   * 
+   * } catch (Exception e) {
+   * 
+   * logs.append("[ ERROR ] - [ NOT ALL TASKS COULD BE COMPLETED DUE TO AN ERROR ] - [ FAIL ]\n");
+   * e.printStackTrace(); logs.append(e.getMessage()); jsonResp.addProperty("message",
+   * logs.toString()); responseJsonObjectData.addProperty("statusCode", 400);
+   * responseJsonObjectData.addProperty("action", "HIDE_RESTORE");
+   * responseJsonObjectData.add("error", jsonResp); return new
+   * Gson().toJson(responseJsonObjectData); } }
+   */
 
   public String hideRestoreBalloon(String encodedJson) {
     JsonObject jsonResp = new JsonObject();
@@ -258,7 +263,8 @@ public class BalloonTrackerProcessor {
           balloonHideRestoreProcessor.picossDataFile(decodedString);
 
       if (result.isSuccess()) {
-        this.processBalloonData(false, "", logs);
+        this.processBalloonData(true, "", logs);
+        // this.processBalloonData(false, "", logs);
       }
 
       responseJsonObjectData.addProperty("taskState", result.isSuccess() ? "RELOADING" : "NONE");
@@ -268,11 +274,11 @@ public class BalloonTrackerProcessor {
       responseJsonObjectData.addProperty("statusCode", 200);
       jsonResp.add("data", responseJsonObjectData);
 
-     // JsonObject jr = new JsonObject();
-      //jr.add("data", responseJsonObjectData);
-      //jr.addProperty("action", "HIDE_RESTORE");
-      //jsonResp.add("data", jr);
-      
+      // JsonObject jr = new JsonObject();
+      // jr.add("data", responseJsonObjectData);
+      // jr.addProperty("action", "HIDE_RESTORE");
+      // jsonResp.add("data", jr);
+
       jsonResp.addProperty("logs", logs.toString());
       jsonResp.addProperty("statusCode", 200);
       jsonResp.addProperty("action", "HIDE_RESTORE");
@@ -329,8 +335,8 @@ public class BalloonTrackerProcessor {
   public String ping() {
     JsonObject jsonResp = new JsonObject();
     JsonObject responseJsonObjectData = new JsonObject();
-    
-    responseJsonObjectData.addProperty("name","Browxy Balloon Server");
+
+    responseJsonObjectData.addProperty("name", "Browxy Balloon Server");
     responseJsonObjectData.addProperty("version", "1.0");
     responseJsonObjectData.addProperty("servlet", "ping");
 
@@ -340,8 +346,8 @@ public class BalloonTrackerProcessor {
     jsonResp.add("server", responseJsonObjectData);
 
     return new Gson().toJson(jsonResp);
-  } 
-  
+  }
+
   private static String decodeBase64(String encodedString) {
     java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
     byte[] decodedBytes = decoder.decode(encodedString);

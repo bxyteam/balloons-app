@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en" style="overflow: hidden">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Balloon Gmap</title>
+        <style></style>
+        <script type="text/javascript">
+            window.PARENT_URL = "https://balloons.dev.browxy.com";
+            function initMap() {}
+        </script>
+        <script
+            type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAACTum6vjLOeCDgGj6EFFnzJMe7r8xOII&loading=async&callback=initMap"
+        ></script>
+        <script
+            type="text/javascript"
+            src="https://www.google.com/jsapi"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/assetsSrc.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/indexGmap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/bxyteam/balloons@main/frontend/js/suncalc.min.js"></script>
+    </head>
+    <body>
+        <div style="position: relative; width: 100%; height: 100%">
+            <div
+                id="map_canvas"
+                style="
+                    border: 0;
+                    height: 80%;
+                    width: 80%;
+                    margin-right: auto;
+                    margin-left: auto;
+                    background-color: #213468;
+                    position: relative;
+                "
+            ></div>
+            <div
+                id="legend"
+                style="
+                    visibility: hidden;
+                    position: absolute;
+                    left: 240px;
+                    bottom: 2px;
+                    width: 530px;
+                    height: 20px;
+                    color: #ffffff;
+                    font-family: Tahoma, Arial;
+                    font-size: 13px;
+                    line-height: 15px;
+                    font-weight: bold;
+                    text-shadow: 1px 1px #000000;
+                    cursor: pointer;
+                "
+                onclick="window.open('http:\/\/amsat.org.ar', '_blank')"
+                title="Go to http://amsat.org.ar"
+            >
+                <center>
+                    <span style="font-size: 14px">&copy;</span>&nbsp;​<img
+                        src="https://i.postimg.cc/jdxfRtm9/amsatlogon.gif"
+                        style="vertical-align: middle"
+                        width="18px"
+                    />&nbsp;73, LU7AA, <u>AMSAT Argentina</u>&nbsp;&nbsp;<a
+                        href="http://geosistemas.com.ar"
+                        style="color: #eeffff"
+                        target="_blank"
+                        title="Go to Geosistemas.com.ar"
+                        ><u>Geosistemas.com.ar</u></a
+                    >&nbsp;TKS!&nbsp;
+                </center>
+            </div>
+
+            <div
+                id="rutina"
+                title=" Click for Callsign Data&#13;Use from wsprlive.net:&#13;NORMAL = 3,000 reports&#13;FULL = 20,000 rep. & slow"
+                style="
+                    position: absolute;
+                    top: 2px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 40px;
+                    height: 17px;
+                    visibility: hidden;
+                    color: #ffffff;
+                    font-size: 15px;
+                    line-height: 13px;
+                    font-family: Arial;
+                    align-content: center;
+                    text-shadow: 1px 1px #000000;
+                    cursor: pointer;
+                    white-space: nowrap;
+                "
+            ></div>
+
+            <div
+                id="iconos"
+                style="position: absolute; top: 120px; left: 15px; width: 35px !important; height: 300px; visibility: hidden; color: #ffffff; font-size: 15px; line-height: 13px; font-family: &amp; quot; Arial Narrow&amp;quot; ! important; font-weight: normal; align-content: center; text-shadow: 1px 1px #000000;"
+            >
+                <img
+                    alt="UPDATE"
+                    title="UPDATE"
+                    style="cursor: pointer"
+                    onclick="setid()"
+                    src="https://i.postimg.cc/ZqxZYt17/refresh.gif"
+                    onmouseover="this.src='https://i.postimg.cc/zXzctd5Y/refresh1.gif'"
+                    width="21px"
+                    style="width: 21px"
+                    onmouseout="this.src='https://i.postimg.cc/ZqxZYt17/refresh.gif'"
+                />
+                <br style="height: 3px" />
+                <span id="Prox">%=Prox%</span> <br style="line-height: 1px" />
+                <br style="line-height: 4px" />
+                <a
+                    onclick="gohide()"
+                    href="#"
+                    title="Show/Hide&#13; SPOTTERS"
+                    alt="Show/Hide&#13; SPOTTERS"
+                    style="
+                        color: #ffffff;
+                        font-size: 15px;
+                        line-height: 12px;
+                        font-family: Arial Narrow;
+                        align-content: center;
+                        text-shadow: 2px 2px #000000;
+                        text-align: center;
+                    "
+                >
+                    <span
+                        id="hide"
+                        name="hide"
+                        style="
+                            text-align: center;
+                            font-family: Arial Narrow;
+                            font-size: 11px;
+                            line-height: 9px;
+                            font-weight: bold;
+                            text-align: center;
+                            white-space: nowrap;
+                        "
+                        >HideSpots</span
+                    >
+                </a>
+                <br />
+                <br style="line-height: 4px" />
+                <a
+                    onclick="gohidet()"
+                    href="#"
+                    title="Show/Hide&#13;TRACK"
+                    alt="Show/Hide&#13;TRACK"
+                    style="
+                        color: #ffffff;
+                        font-size: 15px;
+                        line-height: 12px;
+                        font-family: Arial Narrow;
+                        align-content: center;
+                        text-shadow: 2px 2px #000000;
+                        text-align: center;
+                    "
+                >
+                    <span
+                        id="hidet"
+                        name="hidet"
+                        style="
+                            text-align: center;
+                            font-family: Arial Narrow;
+                            font-size: 11px;
+                            line-height: 9px;
+                            font-weight: bold;
+                            text-align: center;
+                            white-space: nowrap;
+                        "
+                        >HideTrack</span
+                    >
+                </a>
+                <br />
+                <img
+                    alt="Surface WINDS&#13;CLOUD Tops"
+                    title="Surface WINDS&#13;CLOUD Tops"
+                    style="cursor: pointer"
+                    onclick="gowinds()"
+                    src="https://i.postimg.cc/Ss1BjyVr/wind.gif"
+                    onmouseover="this.src='https://i.postimg.cc/XNcPkRRg/wind1.gif'"
+                    onmouseout="this.src='https://i.postimg.cc/Ss1BjyVr/wind.gif'"
+                />
+                <br style="line-height: 2px" />
+                <br style="line-height: 4px" />
+                <a
+                    href="#"
+                    onclick="gowinds1()"
+                    title="12Km Winds"
+                    style="
+                        color: #ffffff;
+                        font-size: 14px;
+                        line-height: 11px;
+                        font-family: Arial Narrow;
+                        align-content: center;
+                        text-shadow: 2px 2px #000000;
+                    "
+                    >12 Km<br style="line-height: 1px" />Winds<br
+                        style="line-height: 1px"
+                    />~~~~~
+                </a>
+                <br style="line-height: 1px" />
+                <img
+                    alt="AIRCRAFT"
+                    title="AIRCRAFT"
+                    style="cursor: pointer"
+                    onclick="goplanes()"
+                    src="https://i.postimg.cc/kgtgmHJz/plane.gif"
+                    onmouseover="this.src='https://i.postimg.cc/fTQQ4K1Z/plane1.gif'"
+                    onmouseout="this.src='https://i.postimg.cc/kgtgmHJz/plane.gif'"
+                /><br />
+                <img
+                    alt="SHIPS"
+                    title="SHIPS"
+                    style="cursor: pointer"
+                    onclick="goships()"
+                    src="https://i.postimg.cc/j58bN6qy/ship.gif"
+                    onmouseover="this.src='https://i.postimg.cc/j58bN6qy/ship.gif'"
+                    onmouseout="this.src='https://i.postimg.cc/j58bN6qy/ship.gif'"
+                />
+                <br style="line-height: 5px" />
+                <br style="line-height: 3px" />
+                <a
+                    href="https://www.ready.noaa.gov/READY_balloon.php"
+                    title="HySplit"
+                    alt="HySplit"
+                    target="_blank"
+                    style="
+                        color: #ffffff;
+                        font-size: 15px;
+                        line-height: 20px;
+                        font-family: Arial Narrow;
+                        align-content: center;
+                        text-shadow: 2px 2px #000000;
+                    "
+                    >NOAA</a
+                >
+                <br style="line-height: 1px" />
+                <a
+                    href="#"
+                    onclick="showprop()"
+                    title="Propagation"
+                    alt="Propagation"
+                    style="
+                        color: #ffffff;
+                        font-size: 15px;
+                        line-height: 20px;
+                        font-family: Arial Narrow;
+                        align-content: center;
+                        text-shadow: 2px 2px #000000;
+                    "
+                    >PROP</a
+                >
+                <br style="line-height: 1px" />
+                <a
+                    href="http://kiwisdr.com/public/"
+                    target="_blank"
+                    title="KIWISDR"
+                    style="
+                        color: #ffffff;
+                        font-size: 15px;
+                        line-height: 18px;
+                        font-family: Arial Narrow;
+                        align-content: center;
+                        text-shadow: 2px 2px #000000;
+                    "
+                    >Kiwisdr</a
+                >
+                <br style="line-height: 3px" />
+                <br style="line-height: 3px" />
+                <a
+                    href="https://www.paypal.me/AMSATARGENTINA/"
+                    title=" Please help keep site active, if possible&#13;&#xbb;Donate to Amsat Argentina, Thanks!&#xab;"
+                    target="_blank"
+                    style="text-decoration: none"
+                >
+                    <span
+                        style="
+                            height: 18px;
+                            width: 40px;
+                            font-size: 11px;
+                            line-height: 10px;
+                            border: outset;
+                            border-width: 1px;
+                            background-color: #4e7330;
+                            color: white;
+                            border-radius: 3px;
+                            border-color: white;
+                            cursor: pointer;
+                            text-shadow:
+                                1px 1px 0 black,
+                                2px 2px 0 black;
+                            text-decoration: none;
+                        "
+                    >
+                        <i
+                            >&nbsp;Donate&nbsp;<span
+                                style="color: red; font-size: 9px"
+                                >&#10084;</span
+                            >&nbsp;
+                        </i>
+                    </span>
+                </a>
+                <br style="line-height: 1px" />
+                <a href="http://amsat.org.ar/comentar.html" target="_blank">
+                    <img
+                        title="Comment"
+                        alt="Comment"
+                        src="https://i.postimg.cc/gJbwQW3g/contact.gif"
+                        width="35px"
+                        height="20px"
+                    />
+                </a>
+                <br style="line-height: 3px" />
+                <span style="font-size: 14px"
+                    >&nbsp;Spotters <br style="line-height: 8px" />Avg.Freq.
+                    <br style="line-height: 2px" />
+                    <br style="line-height: 2px" />
+                    <span id="avgfreq"></span><br style="line-height: 2px" />
+                    <b id="addPlus"></b>
+                </span>
+                <br style="line-height: 2px" />
+                <span
+                    title="This free application&#13;tracks PicoBalloons&#13;using wsprnet data&#13;Set callsign below"
+                    style="
+                        font-size: 32px;
+                        line-height: 30px;
+                        font-weight: normal;
+                        color: #eeeeee;
+                        cursor: pointer;
+                        text-shadow: 1px 1px #000000;
+                    "
+                    >&nbsp?</span
+                ><br />
+                <img
+                    title="updating"
+                    alt="updating"
+                    name="wdown"
+                    id="wdown"
+                    src="https://i.postimg.cc/KzYXZK7j/wdo.gif"
+                    width="27px"
+                    height="85px"
+                    style="width: 27px; height: 85px; visibility: hidden"
+                />
+            </div>
+        </div>
+        <!-- Set visibility to hidden -->
+        <div
+            id="lineadianoche"
+            style="
+                visibility: hidden;
+                position: absolute;
+                width: 150px;
+                height: 20px;
+                color: #ffa000;
+                font-family: Tahoma, Arial;
+                font-size: 15px;
+                line-height: 16px;
+                font-weight: bold;
+            "
+        >
+            <center>Day / Night<br />Change Line</center>
+        </div>
+        <script>
+            window.addEventListener(
+                "message",
+                (event) => {
+                    if (
+                        event.origin === "https://balloons.browxy.com" ||
+                        event.origin === "https://balloons.dev.browxy.com"
+                    ) {
+                        const jsonData = event.data.props.jsonData;
+
+                        window.locations = jsonData.locations;
+                        window.flechas = jsonData.flechas;
+                        window.beacon1 = jsonData.beacon1;
+                        window.parentLocation = jsonData.parentLocation;
+                        window.bcid = jsonData.bcid;
+                        window.lanzamiento = jsonData.lanzamiento;
+                        window.searchParams = jsonData.searchParams;
+                        window.iframeHeight = jsonData.iframeHeight;
+                        window.iframeWidth = jsonData.iframeWidth;
+                        window.comentariosballoon = jsonData.comentariosballoon;
+                        window.comentfull = jsonData.comentfull;
+                        saveglobo = jsonData.otherValues.saveglobo;
+                        saveestaciones = jsonData.otherValues.saveestaciones;
+                        velest = jsonData.otherValues.velest;
+                        hide = jsonData.otherValues.hide;
+                        Kmrecorridos = jsonData.otherValues.Kmrecorridos;
+                        TZD = jsonData.otherValues.TZD;
+                        txt = jsonData.otherValues.txt;
+                        saveglobo = jsonData.otherValues.saveglobo;
+                        saveestaciones = jsonData.otherValues.saveestaciones;
+                        velest = jsonData.otherValues.velest;
+                        meterfeet = jsonData.otherValues.meterfeet;
+                        prevaltutext = jsonData.otherValues.prevaltutext;
+                        diaslaunch = jsonData.otherValues.diaslaunch;
+                        lica = jsonData.otherValues.lica;
+                        map = jsonData.otherValues.map;
+                        distanciatotal = jsonData.otherValues.distanciatotal;
+                        rumboest = jsonData.otherValues.rumboest;
+                        velocidad = jsonData.otherValues.velocidad;
+                        sunlon = jsonData.otherValues.sunlon;
+                        sunlat = jsonData.otherValues.sunlat;
+                        savelato = jsonData.otherValues.savelato;
+                        savelono = jsonData.otherValues.savelono;
+                        sunarray = jsonData.otherValues.sunarray;
+                        balloonarray = jsonData.otherValues.balloonarray;
+                        balloonCoords = jsonData.otherValues.balloonCoords;
+                        radian = jsonData.otherValues.radian;
+                        dt = jsonData.otherValues.dt;
+                        launchdate = jsonData.otherValues.launchdate;
+                        window.diaslaunch = Math.floor(
+                            (new Date() - new Date(window.getLaunchDate())) /
+                                (1000 * 60 * 60 * 24),
+                        );
+
+                        document.getElementById("rutina").style.top = 10;
+                        document.getElementById("rutina").style.left = 80;
+
+                        document.getElementById("rutina").innerHTML =
+                            jsonData.rutinaElementValue;
+                        if (jsonData.otherValues.otherInputValue != "") {
+                            document.getElementById("rutina").style.visibility =
+                                "visible";
+                        }
+
+                        if (jsonData.otherValues.otherInputValue != "") {
+                            document.getElementById("rutina").style.visibility =
+                                "visible";
+                        }
+
+                        if (jsonData.otherValues.otherInputValue != "") {
+                            document.getElementById("iconos").style.visibility =
+                                "visible";
+                        }
+
+                        if (jsonData.otherValues.otherInputValue != "") {
+                            document.getElementById("iconos").style.visibility =
+                                "visible";
+                        }
+
+                        document.getElementById("addPlus").innerHTML =
+                            jsonData.addplusElementValue;
+                        document.getElementById("avgfreq").innerHTML =
+                            jsonData.avgfreqElementValue;
+                        document.getElementById("Prox").innerHTML =
+                            jsonData.proxElementValue;
+                        ponermapa(jsonData.locator, jsonData.licencia);
+                    } else {
+                        console.log(
+                            "Mensaje recibido desde una fuente no autorizada:",
+                            event,
+                        );
+                    }
+                },
+                false,
+            );
+        </script>
+    </body>
+</html>

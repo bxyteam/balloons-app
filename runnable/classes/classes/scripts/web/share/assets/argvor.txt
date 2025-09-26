@@ -1,0 +1,88 @@
+# VOR Information:  ID, Lat, Long, MagDec, Name, Country, Location
+# Report prepared: 11/19/2012 15:55
+
+AMB	-33.419736	-70.784381	-2.50	Santiago	CH	Chile
+BCA	-38.719965	-62.158375	+2.05	Bahia Blanca	AG	Argentina
+CAR	-36.755489	-73.053128	-6.4	Concepcion	CH	Chile
+CAT	-28.583508	-65.746878	+4.43	Catamarca	AG	Argentina
+CBA	-31.313250	-64.203679	+4.47	Cordoba		AG	Argentina
+CHP	-40.048969	-71.095278	-6.97	SM de los Andes	AG	Argentina
+CRR	-27.437292	-58.761767	+11.1	Corrientes	AG	Argentina
+CRV	-45.773305	-67.371566	-7.00	C.Rivadavia	AG	Argentina
+CTB	-25.531724	-49.167716	+18.8	Curitiba	BR	Brazil
+DIL	-37.225162	-59.229489	+5.73	Tandil		AG	Argentina
+DOZ	-32.831918	-68.790823	-0.01	Mendoza		AG	Argentina
+DUR	-33.356249 	-56.496096	+5.00	Durazno	UR	UR	Uruguay
+ECA	-50.278447	-72.045638	-13.3	El Calafate	AG	Argentina
+ENO	-34.562844	-58.790460	+7.62	Mariano Moreno	AG	Argentina
+ERE	-41.140256	-71.188981	-7.48	Bariloche	AG	Argentina
+ESQ	-42.887123	-71.100267	-8.48	Esquel		AG	Argentina
+EZE	-34.824053	-58.535318	+9.30	Ezeiza		AG	Argentina
+FDO	-34.451416	-58.584051	 +7.95	San Fernando	AG	Argentina
+FAG	-23.466944	-70.447778	+2.51	Antofagasta	CH	Chile
+FSA	-26.210261	-58.224622	+12.2	Formosa		AG	Argentina
+GAL	-51.610943	-69.330185	-11.7	Rio Gallegos	AG	Argentina
+GBE	-35.750890	-58.464674	+7.38	Gral. Belgrano	AG	Argentina
+GPI	-35.692181	-63.762237	+2.55	General Pico	AG	Argentina
+GRA	-53.775204	-67.745537	-11.7	Rio Grande	AG	Argentina
+GUA	-33.009610	-58.614128	+8.78	Gualeguaychu	AG	Argentina
+IGU	-25.734502	-54.485709	+15.2	Iguazu		AG	Argentina
+ITO	-29.211820	-67.441346	+2.48	Chilecito	AG	Argentina
+JUA	-31.563916	-68.421467	-0.00	San Juan	AG	Argentina
+JUJ	-24.393518	-65.092789	+6.73	Jujuy		AG	Argentina
+LAR	-29.388611	-66.803530	+2.97	La Rioja	AG	Argentina
+LYE	-34.141311	-63.360768	+3.75	Laboulaye	AG	Argentina
+MCS	-30.266658	-57.638283	+10.9	Monte Caseros	AG	Argentina
+MDP	-37.929837	-57.576477	+6.70	Mar del Plata	AG	Argentina
+MJZ	-32.686111	-62.160548	+5.72	Marcos Juarez	AG	Argentina
+MLG	-35.486089	-69.578616	-2.77	Malargue	AG	Argentina
+MLZ	-32.342439	-54.221981	+5.00	Melo, Cerro L.	UR	Uruguay
+MON	-41-429167	-73.091944	-8.90	Puerto Monthh	CH	Chile
+MPN	-51.822666	-58.450729	-4.10	Mount Pleasant	UK	England
+MVE	-34.832696 	-56.025128	+5.00	Montevideo	UR	Uruguay
+NAS	-53.003736	-70.853681	-13.6	Punta Arenas	CH	Chile
+NEU	-38.950375	-68.154752	-3.38	Neuquen	AG	AG	Argentina
+NIN	-34.541679	-60.932677	+5.73	Junin   	AG	Argentina
+OSA	-36.583710	-64.272795	+1.45	Santa Rosa	AG	Argentina
+PAL	-34.611624	-58.613803	+7.85	El Palomar	AG	Argentina
+PAR	-31.808324	-60.484657	+7.66	Parana		AG	Argentina
+PAZ	-16.512047	-68.233447	+7.02	La Paz		BO	Bolivia
+PDI	-35.345514	-57.275135	+8.63	Punta Indio	AG	Argentina
+PDP	-34.858304 	-55.091752	+5.00	Pta del Este	UR	Uruguay
+POR	-29.996000	-51.165167	+16.1	Porto Alegre	BR	Brazil
+POS	-27.385591	-55.969044	+13.6	Posadas		AG	Argentina
+PSY	-51.684359	-57.777402	-3.40	Port Stanley	UK	England
+PTA	-34.975968	-57.898117	+8.22	La Plata	AG	Argentina
+ROS	-32.905078	-60.781460	+6.90	Rosario		AG	Argentina
+RTA	-29.208699	-59.682401	+9.70	Reconquista	AG	Argentina
+RYD	-33.728733	-65.381025	+2.12	Villa Reynolds	AG	Argentina
+SAL	-24.852275	-65.483905	+6.38	Salta		AG	Argentina
+SDE	-27.779346	-64.318076	+6.15	S. del Estero	AG	Argentina
+SIS	-27.446881	-59.057180	+11.0	Resistencia	AG	Argentina
+SJU	-49.309634	-67.812744	-9.20	San Julian	AG	Argentina
+SNO	-33.657275	-71.614575	+2.50	S.Domingo	CH	Chile
+SNT	-34.222396	-59.441494	+7.27	S.A. de Areco	AG	Argentina
+SRA	-34.588835	-68.394724	-1.13	San Rafael	AG	Argentina
+SRC	-32.372649	-65.183225	+2.16	SR de Conlara	AG	Argentina
+STO	-31.434727	-57.984248	+11.7	Salto	UR	Uruguay
+TMB	-31.750279	-55.923805	+11.7	Tacuarembo	UR	Uruguay
+TRC	-33.092287	-64.265085	+3.40	Rio Cuarto	AG	Argentina
+TRE	-43.202498	-65.247242	-3.52	Trelew		AG	Argentina
+TUC	-26.845777	-65.108516	+5.70	Tucuman		AG	Argentina
+UIS	-33.268352	-66.357793	+1.43	San Luis	AG	Argentina
+USU	-54.837781	-68.284026	-12.8	Ushuaia		AG	Argentina
+VAS	-25.244167	-57.521944	+13.7	Asuncion	PR	Paraguay
+VIE	-40.867258	-63.000884	-0.08	Viedma		AG	Argentina
+C01	-36.208566	-65.415433	+2.55	Victorica 	AG	Amsat-LU
+C02	-40.581700	-67.751100	-2.78	Eclipsor	AG	Argentina
+C03	-35.903736	-64.279805	+2.55	P.Jurasico 	AG	Amsat-LU
+C04	-36.031111	-64.938888	+2.55	Cruce11y102	AG	Amsat-LU
+C05	-35.840300	-61.859990	+4.74	Pehuajo	AG	Amsat-LU
+C06	-36.187100	-61.074800	+4.74	Bolivar	AG	Amsat-LU
+C07	-33.572679	-56.877670	+10.1	Trinidad	UR	Uruguay
+C08	-35.814165	-61.923333	+4.74	ET1 Pehuajo	AG	Amsat-LU
+C09	-33.458135	-70.662054	-2.65	Santiago	CH	SPEL U.Chile
+C10	-26.808285	-65.217590	-2.65	Tucuman		AG	Tucuman
+C11	-35.777617	-61.910685	+4.74	Lag.Pehuajo	AG	Argentina
+C12	-34.635277	-69.088611	+0.74	C.Diamante	AG	Argentina
+C19	-34.166700	-59.800000	+7.27	Cap.Sarm.	AG	Argentina

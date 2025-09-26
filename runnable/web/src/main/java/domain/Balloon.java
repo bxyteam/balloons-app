@@ -18,7 +18,8 @@ public class Balloon {
   private String repito;
   private String telen;
   private String comments;
-
+  private String old;
+  
   public String getLine() {
     return line;
   }
@@ -145,6 +146,14 @@ public class Balloon {
 
   public void setComments(String comments) {
     this.comments = comments;
+  }
+  
+  public String getOld() {
+    return this.old;
+  }
+
+  public void setOld(String old) {
+    this.old = old;
   }
 }
 
