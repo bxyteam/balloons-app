@@ -9,7 +9,7 @@ services:
     container_name: balloon
     hostname: balloon
     networks:
-      - browxy
+      - compiler_browxy
     restart: unless-stopped
     ports:
       - "8095:8095"
@@ -20,7 +20,6 @@ services:
       nofile: 524288
 
 networks:
-  browxy:
+  compiler_browxy:
     external: true
-
 
