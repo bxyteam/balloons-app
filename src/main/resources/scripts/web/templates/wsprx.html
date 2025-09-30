@@ -165,90 +165,102 @@
             <input type="hidden" id="callsign" name="callsign" />
             <input type="hidden" id="tracker" name="tracker" />
 
-            <div
-                id="calink"
-                name="calink"
+            <section
                 style="
-                    position: absolute;
-                    top: 65px;
-                    left: 53px;
-                    width: 80px;
-                    border: 0;
-                    height: 0;
-                    margin-right: 0;
-                    margin-left: 0;
-                    background-color: #213468;
-                    text-align: center;
-                    visibility: hidden;
-                    z-index: 1;
+                    display: grid;
+                    grid-template-columns: auto 1fr auto;
+                    gap: 5px;
+                    height: 80%;
                 "
-            ></div>
-
-            <div
-                id="chdiv"
-                name="chdiv"
-                style="
-                    position: absolute;
-                    top: 65px;
-                    right: 25px;
-                    border: 0;
-                    height: 0;
-                    background-color: #313468;
-                    text-align: center;
-                    z-index: 3;
-                    font-size: 15px;
-                    font-weight: bold;
-                    line-height: 14px;
-                    visibility: hidden;
-                    opacity: 0.8;
-                "
-            ></div>
-            <div style="position: relative; width: 100%; height: 100%">
-                <div id="gMapLoader" class="loader"></div>
-                <div id="mapDisplayError" style="display: none">
-                    <h4 style="text-align: center; color: red">
-                        The map could not be displayed because an error occurred
-                        while processing the data.
-                    </h4>
+            >
+                <aside style="overflow: auto; justify-items: center">
+                    <div
+                        id="calink"
+                        name="calink"
+                        style="
+                            width: 90px;
+                            border: 0;
+                            height: 0;
+                            margin-right: 0;
+                            margin-left: 0;
+                            background-color: #213468;
+                            text-align: center;
+                            visibility: hidden;
+                            z-index: 1;
+                        "
+                    ></div>
+                </aside>
+                <div>
+                    <div
+                        id="gmap_chart_container"
+                        style="position: relative; width: 100%; height: 100%"
+                    >
+                        <div id="gMapLoader" class="loader"></div>
+                        <div id="mapDisplayError" style="display: none">
+                            <h4 style="text-align: center; color: red">
+                                The map could not be displayed because an error
+                                occurred while processing the data.
+                            </h4>
+                        </div>
+                        <iframe
+                            id="map_canvas"
+                            src="https://lu7aa.org/balloonGmap.html"
+                            style="
+                                border: none;
+                                height: 80%;
+                                width: 80%;
+                                margin-right: auto;
+                                margin-left: auto;
+                                background-color: #213468;
+                                display: block;
+                                overflow: hidden;
+                                visibility: hidden;
+                            "
+                        ></iframe>
+                        <div
+                            id="chart_div"
+                            style="
+                                position: absolute;
+                                top: 0px;
+                                left: 0px;
+                                width: 1078px;
+                                height: 514px;
+                                visibility: hidden;
+                                background-color: #f2f2f2;
+                                overflow: auto;
+                            "
+                        ></div>
+                        <div
+                            id="sacar"
+                            onclick="cerrar()"
+                            style="
+                                position: absolute;
+                                color: #ffffff;
+                                font-family: Tahoma;
+                            "
+                        ></div>
+                    </div>
                 </div>
-                <iframe
-                    id="map_canvas"
-                    src="https://lu7aa.org/balloonGmap.html"
-                    style="
-                        border: none;
-                        height: 80%;
-                        width: 80%;
-                        margin-right: auto;
-                        margin-left: auto;
-                        background-color: #213468;
-                        display: block;
-                        overflow: hidden;
-                        visibility: hidden;
-                    "
-                ></iframe>
-                <div
-                    id="chart_div"
-                    style="
-                        position: absolute;
-                        top: 0px;
-                        left: 210px;
-                        width: 1078px;
-                        height: 514px;
-                        visibility: hidden;
-                        background-color: #f2f2f2;
-                        overflow: auto;
-                    "
-                ></div>
-                <div
-                    id="sacar"
-                    onclick="cerrar()"
-                    style="
-                        position: absolute;
-                        color: #ffffff;
-                        font-family: Tahoma;
-                    "
-                ></div>
-            </div>
+                <aside style="overflow: auto; justify-items: center">
+                    <div
+                        id="chdiv"
+                        name="chdiv"
+                        style="
+                            border: 0;
+                            height: 0;
+                            background-color: #313468;
+                            text-align: center;
+                            z-index: 3;
+                            font-size: 15px;
+                            font-weight: bold;
+                            line-height: 14px;
+                            visibility: hidden;
+                            opacity: 0.8;
+                        "
+                    ></div>
+                </aside>
+            </section>
+
             <div
                 id="aprsfi"
                 style="
